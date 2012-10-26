@@ -42,4 +42,6 @@ pf_village = pf_is_static|pf_always_visible|pf_hide_defenders|pf_label_small
 
 parties = [
   ("main_party","Main Party",pf_limit_members, no_menu, pt_none,fac_commoners,0,ai_bhvr_hold,0,(17, 52.5),[(trp_player,1,0)]),
+  
+  ("delay_scripts_set","Delay Scripts Set",pf_disabled|pf_is_static, no_menu, pt_none, fac_commoners,0,ai_bhvr_hold,0,(0., 0),[(trp_looter,1,0)]),
 ]

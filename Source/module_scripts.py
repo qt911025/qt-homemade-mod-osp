@@ -34,7 +34,7 @@ def set_num_of_params_in_each_script():
         param_num = 2
       elif operation == store_script_param and param_num < i_statement[2]:
         param_num = i_statement[2]
-    contents.append((troop_set_slot,"trp_param_num_of_script",i_script,param_num))
+    contents.append((item_set_slot,"itm_param_num_of_script",i_script,param_num))
   return contents
 
 def generate_call_script_scripts(num):
@@ -45,7 +45,7 @@ def generate_call_script_scripts(num):
     statement_block.append((store_script_param_1,":script_id"))
     for j in xrange(i)
       statement_block.append((assign,":param_"+str(j+1),0))
-      statement_block.append((troop_get_slot,":param_"+str(j+1),"trp_param_list",j))
+      statement_block.append((item_get_slot,":param_"+str(j+1),"itm_param_list",j))
       call_script_statement.append(":param_"+str(j+1))
     statement_block.append(call_script_statement[:])
     result.append(("call_script_"+str(i),statement_block[:]))
@@ -6366,15 +6366,108 @@ scripts = [
       (try_end),
       ]),
 ]
-
+scripts.extend(generate_call_script_scripts(max_params_num_plus_1))
 ex_scripts = [
+  ##script_initialize_param_num_of_script
   ("initialize_param_num_of_script",set_num_of_params_in_each_script()),
   
-  ##The scripts following can't be called by other common scripts!
+  ##The scripts following can't be called by other custom scripts!
+  ##script_add_script_after_seconds
+  ("add_script_after_seconds",[
+    (store_script_param_1,":script_id"),
+    (store_script_param_2,":delay_seconds"),
+    
+    (store_add,":time_slot_no","$current_seconds",":delay_seconds"),
+    (val_mod,":time_slot_no",max_seconds_step),
+    (try_begin),
+      (lt,":time_slot_no",0),
+      (val_add,":time_slot_no",max_seconds_step),
+      (val_min,":time_slot_no",max_seconds_step),
+    (try_end),
+    (item_get_slot,":param_num","itm_param_num_of_script",":script_id"),
+    (val_min,":param_num",max_params_num),
+    (item_get_slot,":end_pointer","itm_delay_script_end_pointer_queue",":time_slot_no"),
+    (val_max,":end_pointer",0),
+    (item_get_slot,":recorder_party_no","itm_delay_script_queue",":time_slot_no"),
+    (try_begin),
+      (le,":recorder_party_no",0),
+      (set_spawn_radius,0),
+      (spawn_around_party,"p_delay_scripts_set","pt_none"),
+      (assign,":recorder_party_no",reg0),
+      (assign,":end_pointer",0),
+      (item_set_slot,"itm_delay_script_queue",":time_slot_no",":recorder_party_no"),
+      (party_attach_to_party, ":recorder_party_no", "p_delay_scripts_set"),
+    (try_end),
+    
+    (party_set_slot,":recorder_party_no",":end_pointer",":script_id"),
+    (val_add,":end_pointer",1),
+    
+    # (assign,":param_val",0),
+    (try_for_range,":param_no",0,":param_num"),
+      (item_get_slot,":param_val","itm_param_list",":param_no"),
+      (party_set_slot,":recorder_party_no",":end_pointer",":param_val"),
+      (val_add,":end_pointer",1),
+    (try_end),
+    (item_set_slot,"itm_delay_script_end_pointer_queue",":time_slot_no",":end_pointer"),
+  ]),
+  
+  ##script_call_scripts_in_delay_script_queue
+  ("call_scripts_in_delay_script_queue",[
+    (store_script_param_1,":time_slot_no"),
+    (item_get_slot,":recorder_party_no","itm_delay_script_queue",":time_slot_no"),
+    (gt,":recorder_party_no",0),
+    (item_get_slot,":end_pointer","itm_delay_script_end_pointer_queue",":time_slot_no"),
+    (gt,":end_pointer",0),
+    # (assign,":slot_pointer",0),
+    # (assign,":param_pointer",0),
+    # (assign,":param_value",0),
+    (assign,":current_script_param_num",0),
+    (try_for_range,":slot_pointer",0,":end_pointer"),
+      (party_get_slot,":script_no",":recorder_party_no",":slot_pointer"),
+      (itm_get_slot,":param_num","itm_param_num_of_script",":script_no"),
+      (try_begin),
+        (gt,":param_num",0),
+        (val_min,":param_num",max_params_num),
+        (try_for_range,":param_pointer",0,":param_num"),
+          (val_add,":slot_pointer",1),
+          (party_get_slot,":param_value",":recorder_party_no",":slot_pointer"),
+          (item_set_slot,"itm_param_list",":param_pointer",":param_value"),##TODO
+        (try_end),
+        (assign,":call_script_script_no","script_call_script_0"),
+        (val_add,":call_script_script_no",":param_num"),
+        (call_script,":call_script_script_no",":script_no"),
+      (else_try),
+        (eq,":param_num",0),
+        (call_script,":call_script_script_no",":script_no"),
+      (try_end),
+      ##":slot_pointer" will add 1 at last
+    (try_end),
+    (item_set_slot,"itm_delay_script_end_pointer_queue",":time_slot_no",0),
+    (item_set_slot,"itm_delay_script_queue",":time_slot_no",0),
+    (remove_party,":recorder_party_no"),
+  ]),
+  
+  ##script_clear_delay_script_data
+  ("clear_delay_script_data",[
+    (assign,"$cur_time_slot",0),
+    (try_for_range,":time_slot_no",0,max_seconds_step),
+      (item_get_slot,":recorder_party_no","itm_delay_script_queue",":time_slot_no"),
+      (try_begin),
+        (gt,":recorder_party_no",0),
+        (remove_party,":recorder_party_no"),
+      (try_end),
+      (item_set_slot,"itm_delay_script_queue",":time_slot_no",0),
+      (item_set_slot,"itm_delay_script_end_pointer_queue",":time_slot_no",0),
+    (try_end),
+    (try_for_range,":param_slot_no",0,max_params_num),
+      (item_set_slot,"itm_param_list",":param_slot_no",0),
+    (try_end),
+  ]),
+  
   
 ]
 
-scripts.extend(ex_scripts + generate_call_script_scripts(max_params_num_plus_1))
+scripts.extend(ex_scripts)
 
 for i_script in xrange(len(scripts)):
   if scripts[i_script][0] == "game_start":

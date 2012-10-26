@@ -241,7 +241,7 @@ items = [
  ["bolts","Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag", ixmesh_carry),("bolt_bag_b", ixmesh_carry|imodbit_large_bag)], itp_type_bolts|itp_merchandise|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 64,weight(2.25)|abundance(90)|weapon_length(63)|thrust_damage(1,pierce)|max_ammo(29),imodbits_missile],
  ["steel_bolts","Steel Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bolts|itp_merchandise|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 210,weight(2.5)|abundance(20)|weapon_length(63)|thrust_damage(2,pierce)|max_ammo(29),imodbits_missile],
  ["cartridges","Cartridges", [("cartridge_a",0)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 41,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(1,pierce)|max_ammo(50),imodbits_missile],
- ["ha_cartridges","Ha_Cartridges", [("cartridge_a",0),("flying_bullet",ixmesh_flying_ammo)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 41,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(1,pierce)|max_ammo(120),imodbits_missile,
+ ["ha_cartridges","Ha_Cartridges", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 41,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(1,pierce)|max_ammo(120),imodbits_missile,
     [(ti_on_missile_hit,[(particle_system_burst, "psys_bullet_hit_ground_smoke", pos1, 10)])]
  ],
 
@@ -1087,9 +1087,9 @@ items = [
 ["mail_boots_for_tableau", "Mail Boots", [("mail_boots_a",0)], itp_type_foot_armor | itp_attach_armature  ,0,
  1, weight(3)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(1) ,imodbits_armor ],
 
-["test_rifle", "A280", [("A280",0)], itp_type_musket |itp_primary|itp_two_handed ,itc_rifle, 
- 0 , weight(10)|difficulty(0)|spd_rtng(110)|weapon_length(75)|  shoot_speed(200) | thrust_damage(50,pierce)|max_ammo(30)|accuracy(100),imodbits_none,
- [(ti_on_init_item, [(item_set_slot,"itm_test_rifle",slot_item_shot_sound,"snd_automatic_shoot"),
+["test_rifle", "Automatic Siege Crossbow", [("crossbow_c",0)], itp_type_musket |itp_primary|itp_two_handed ,itcf_shoot_crossbow|itcf_carry_crossbow_back, 
+ 0 , weight(10)|difficulty(0)|spd_rtng(110)|weapon_length(65)|  shoot_speed(200) | thrust_damage(58,pierce)|max_ammo(30)|accuracy(100),imodbits_none,
+ [(ti_on_init_item, [(item_set_slot,"itm_test_rifle",slot_item_shot_sound,"snd_release_crossbow"),
                      (item_set_slot,"itm_test_rifle",slot_item_shoot_speed,200),
                      (item_set_slot,"itm_test_rifle",slot_item_speed_rtng,110),
                      (item_set_slot,"itm_test_rifle",slot_item_length,75),
