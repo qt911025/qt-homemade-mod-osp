@@ -241,7 +241,7 @@ items = [
  ["bolts","Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag", ixmesh_carry),("bolt_bag_b", ixmesh_carry|imodbit_large_bag)], itp_type_bolts|itp_merchandise|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 64,weight(2.25)|abundance(90)|weapon_length(63)|thrust_damage(1,pierce)|max_ammo(29),imodbits_missile],
  ["steel_bolts","Steel Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bolts|itp_merchandise|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 210,weight(2.5)|abundance(20)|weapon_length(63)|thrust_damage(2,pierce)|max_ammo(29),imodbits_missile],
  ["cartridges","Cartridges", [("cartridge_a",0)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 41,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(1,pierce)|max_ammo(50),imodbits_missile],
- ["ha_cartridges","Ha_Cartridges", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 41,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(1,pierce)|max_ammo(120),imodbits_missile,
+ ["ha_cartridges","Automatic_bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 41,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(1,pierce)|max_ammo(120),imodbits_missile,
     [(ti_on_missile_hit,[(particle_system_burst, "psys_bullet_hit_ground_smoke", pos1, 10)])]
  ],
 
@@ -1108,7 +1108,22 @@ items = [
  ]),]],
 
 ["test_magic_swords","Magic Swords", [("sword_medieval_b_small",0),("sword_medieval_b_small_scabbard", ixmesh_carry)], itp_type_thrown |itp_primary|itp_no_pick_up_from_ground ,itcf_throw_javelin|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn, 
-155 , weight(1.5)|difficulty(0)|spd_rtng(95) | shoot_speed(28) | thrust_damage(30 ,  pierce)|max_ammo(7)|weapon_length(85),imodbits_sword_high ],
+155 , weight(1.5)|difficulty(0)|spd_rtng(95) | shoot_speed(28) | thrust_damage(30 ,  pierce)|max_ammo(7)|weapon_length(85),imodbits_sword_high,
+[(ti_on_missile_hit,[
+  (display_message,"@The sword will spawn in 5 seconds."),
+  (store_trigger_param_1,":attacker_agent"),
+  (position_get_x,":pos_x",pos1),
+  (position_get_y,":pos_y",pos1),
+  (position_get_z,":pos_z",pos1),
+  (val_add,":pos_z",200),
+  (item_set_slot,"itm_param_list",0,":attacker_agent"),
+  (item_set_slot,"itm_param_list",1,"itm_test_magic_swords"),
+  (item_set_slot,"itm_param_list",2,"itm_test_magic_swords_sub"),
+  (item_set_slot,"itm_param_list",3,":pos_x"),
+  (item_set_slot,"itm_param_list",4,":pos_y"),
+  (item_set_slot,"itm_param_list",5,":pos_z"),
+  (call_script,"script_add_script_after_seconds",5),
+])]],
 ["test_magic_swords_sub","Swords", [("sword_medieval_b_small",0),("sword_medieval_b_small_scabbard", ixmesh_carry)], itp_type_thrown |itp_primary|itp_no_pick_up_from_ground ,itcf_throw_javelin|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn, 
 155 , weight(1.5)|difficulty(0)|spd_rtng(95) | shoot_speed(28) | thrust_damage(30 ,  pierce)|max_ammo(7)|weapon_length(85),imodbits_sword_high ],
 

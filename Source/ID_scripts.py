@@ -83,5 +83,20 @@ script_add_troop_to_cur_tableau_for_profile = 81
 script_get_troop_custom_banner_num_positionings = 82
 script_get_custom_banner_charge_type_position_scale_color = 83
 script_check_creating_ladder_dust_effect = 84
+script_spawn_missile_at_point = 85
+script_call_script_0 = 86
+script_call_script_1 = 87
+script_call_script_2 = 88
+script_call_script_3 = 89
+script_call_script_4 = 90
+script_call_script_5 = 91
+script_call_script_6 = 92
+script_call_script_7 = 93
+script_call_script_8 = 94
+script_call_script_9 = 95
+script_initialize_param_num_of_script = 96
+script_add_script_after_seconds = 97
+script_call_scripts_in_delay_script_queue = 98
+script_clear_delay_script_data = 99
 
 

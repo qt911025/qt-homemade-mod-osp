@@ -73,28 +73,39 @@ game_menus = [
       (try_end),
     ],
     [
-      ("continue",[],"Continue...",
-      [
+      ("scene_1",[],"Automatic Test Scene",[
         (modify_visitors_at_site,"scn_random_scene"),
         (reset_visitors, 0),
         (set_player_troop, "trp_player"),
         (troop_set_type,"trp_player",1),
         
         (troop_clear_inventory, "trp_player"),
-#        (troop_add_item, "trp_player","itm_ha_cartridges",0),
-#        (troop_add_item, "trp_player","itm_test_rifle",0),
-        (troop_add_item, "trp_player","itm_black_helmet_dark",0),
-        (troop_add_item, "trp_player","itm_mail_with_surcoat_dark",0),
-#        (troop_add_item, "trp_player","itm_black_armor_dark",0),
-        (troop_add_item, "trp_player","itm_black_greaves_dark",0),
+        (troop_add_item, "trp_player","itm_ha_cartridges",0),
+        (troop_add_item, "trp_player","itm_test_rifle",0),
         (troop_equip_items, "trp_player"),
         
         (set_visitor, 0, "trp_player"),
         (set_jump_entry,0),
-        (set_jump_mission,"mt_test_scene"),
+        (set_jump_mission,"mt_test_scene_1"),
         (jump_to_scene, "scn_random_scene"),
         (change_screen_mission),
-        ]),
+      ]),
+      ("scene_2",[],"Delay Script Scene",[
+        (modify_visitors_at_site,"scn_random_scene"),
+        (reset_visitors, 0),
+        (set_player_troop, "trp_player"),
+        (troop_set_type,"trp_player",1),
+        
+        (troop_clear_inventory, "trp_player"),
+        (troop_add_item, "trp_player","itm_test_magic_swords",0),
+        (troop_equip_items, "trp_player"),
+        
+        (set_visitor, 0, "trp_player"),
+        (set_jump_entry,0),
+        (set_jump_mission,"mt_test_scene_2"),
+        (jump_to_scene, "scn_random_scene"),
+        (change_screen_mission),
+      ]),
 
       ("go_back_dot",
       [],

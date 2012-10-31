@@ -1,4 +1,5 @@
-6
+7
+qstr_The_sword_will_spawn The_sword_will_spawn_in_5_seconds.
 qstr_Next_Page Next_Page
 qstr_Game_Rules:^ Game_Rules:^
 qstr_0 0

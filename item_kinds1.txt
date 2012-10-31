@@ -1,5 +1,5 @@
 itemsfile version 3
-525
+517
  itm_no_item INVALID_ITEM INVALID_ITEM 1  invalid_item 0  12582914 9223388529554358287 3 0 1.500000 100 0 0 0 0 16384 103 0 90 0 522 528
  0
 0
@@ -556,7 +556,7 @@ itemsfile version 3
  0
 0
 
- itm_ha_cartridges Ha_Cartridges Ha_Cartridges 2  cartridge_a 0  flying_bullet 2305843009213693952  16875538 0 41 4398046511112 2.250000 90 0 0 0 0 0 0 0 3 120 257 0
+ itm_ha_cartridges Automatic_bolts Automatic_bolts 3  bolt 0  flying_missile 2305843009213693952  bolt_bag_c 3458764513820540928  16875538 0 41 4398046511112 2.250000 90 0 0 0 0 0 0 0 3 120 257 0
  0
 1
 -52.000000  1 1969 3 1008806316530991165 1 10 
@@ -2064,69 +2064,38 @@ itemsfile version 3
  0
 0
 
- itm_test_rifle A280 A280 1  A280 0  6291473 54043749612257472 0 0 10.000000 100 0 0 100 0 0 110 200 75 30 306 0
+ itm_test_rifle Automatic_Siege_Crossbow Automatic_Siege_Crossbow 1  crossbow_c 0  6291473 5637160960 0 0 10.000000 100 0 0 100 0 0 110 200 65 30 314 0
  0
 2
--50.000000  5 507 3 288230376151712253 63 1152921504606847103 507 3 288230376151712253 81 200 507 3 288230376151712253 80 110 507 3 288230376151712253 79 75 507 3 288230376151712253 78 75 
+-50.000000  5 507 3 288230376151712253 63 1152921504606847016 507 3 288230376151712253 81 200 507 3 288230376151712253 80 110 507 3 288230376151712253 79 75 507 3 288230376151712253 78 75 
 -51.000000  8 2071 1 1224979098644774912 1726 2 1224979098644774913 1224979098644774912 527 3 1224979098644774914 1224979098644774913 79 721 2 1 1224979098644774914 527 3 1224979098644774915 1224979098644774913 63 599 2 1224979098644774915 1 1969 3 1008806316530991164 1 10 1969 3 1008806316530991166 1 20 
 
- itm_black_helmet_dark Black_Helmet_Dark Black_Helmet_Dark 1  black_helm_dark 0  65548 0 638 704643238 2.750000 100 50 0 0 0 0 0 0 0 0 0 0
+ itm_test_magic_swords Magic_Swords Magic_Swords 2  sword_medieval_b_small 0  sword_medieval_b_small_scabbard 3458764513820540928  137443147786 36239048704 155 155668 1.500000 100 0 0 0 0 0 95 28 85 7 286 0
  0
-0
+1
+-52.000000  13 1106 1 1585267068834414592 2071 1 1224979098644774912 726 2 1224979098644774913 1 727 2 1224979098644774914 1 728 2 1224979098644774915 1 2105 2 1224979098644774915 200 507 3 288230376151712258 0 1224979098644774912 507 3 288230376151712258 1 288230376151712254 507 3 288230376151712258 2 288230376151712255 507 3 288230376151712258 3 1224979098644774913 507 3 288230376151712258 4 1224979098644774914 507 3 288230376151712258 5 1224979098644774915 1 2 936748722493063265 5 
 
- itm_black_armor_dark Black_Armor_Dark Black_Armor_Dark 1  black_armor_dark 0  16842765 0 9496 704643238 28.000000 100 0 57 18 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_black_greaves_dark Black_Greaves_Dark Black_Greaves_Dark 1  black_greaves_dark 0  69390 0 2361 704643236 3.500000 100 0 0 35 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_mail_with_surcoat_dark Mail_with_Surcoat_Dark Mail_with_Surcoat_Dark 1  mail_long_surcoat_dark 0  16842765 0 1544 704643236 22.000000 100 0 42 14 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_scythe Succubus_Scythe Succubus_Scythe 1  succubus_scythe 0  2153775108 8725730611433216 169 8202 7.000000 100 0 0 0 0 51200 97 0 200 0 40 306
- 0
-0
-
- itm_succubus_scythe_no_wheel Succubus_Scythe_No_Wheel Succubus_Scythe_No_Wheel 1  succubus_scythe_no_wheel 0  2153775108 8725730611433216 169 8202 7.000000 100 0 0 0 0 51200 97 0 200 0 40 306
- 0
-0
-
- itm_succubus_head Succubus_Head Succubus_Head 1  succubus_head 0  2147549196 0 638 123731968 2.750000 100 50 0 0 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_gloves Succubus_Gloves Succubus_Gloves 1  succubus_glovesL 0  65551 0 90 123731968 0.250000 120 0 2 0 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_hands Succubus_Hands Succubus_Hands 1  succubus_handL 0  65551 0 90 123731968 0.250000 120 0 2 0 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_upper_out Succubus_Upper_Out Succubus_Upper_Out 1  succubus_upper_out 0  16842765 0 9496 123731968 28.000000 100 0 57 18 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_upper_in Succubus_Upper_In Succubus_Upper_In 1  succubus_upper_in 0  16842765 0 9496 123731968 28.000000 100 0 57 18 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_upper_broken Succubus_Upper_Broken Succubus_Upper_Broken 1  succubus_upper_broken 0  16842765 0 9496 123731968 28.000000 100 0 57 18 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_shoes Succubus_Shoes Succubus_Shoes 1  succubus_shoes 0  69390 0 2361 123731968 3.500000 100 0 0 35 0 0 0 0 0 0 0 0
- 0
-0
-
- itm_succubus_shoes_broken Succubus_Shoes_Broken Succubus_Shoes_Broken 1  succubus_shoes_broken 0  69390 0 2361 123731968 3.500000 100 0 0 35 0 0 0 0 0 0 0 0
+ itm_test_magic_swords_sub Swords Swords 2  sword_medieval_b_small 0  sword_medieval_b_small_scabbard 3458764513820540928  137443147786 36239048704 155 155668 1.500000 100 0 0 0 0 0 95 28 85 7 286 0
  0
 0
 
  itm_items_end Items_End Items_End 1  shield_round_a 0  0 0 1 0 0.000000 100 0 0 0 0 0 0 0 0 0 0 0
+ 0
+0
+
+ itm_param_num_of_script Parameter_Number_of_Script Parameter_Number_of_Script 1  shield_round_a 0  0 0 1 0 0.000000 100 0 0 0 0 0 0 0 0 0 0 0
+ 0
+0
+
+ itm_param_list Parameter_List Parameter_List 1  shield_round_a 0  0 0 1 0 0.000000 100 0 0 0 0 0 0 0 0 0 0 0
+ 0
+0
+
+ itm_delay_script_end_pointer_queue Delay_Script_End_Pointer_Queue Delay_Script_End_Pointer_Queue 1  shield_round_a 0  0 0 1 0 0.000000 100 0 0 0 0 0 0 0 0 0 0 0
+ 0
+0
+
+ itm_delay_script_queue Delay_Script_Queue Delay_Script_Queue 1  shield_round_a 0  0 0 1 0 0.000000 100 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 

@@ -1,5 +1,5 @@
 soundsfile version 3
-367
+366
  drum_3.ogg 769
  tutorial_1.ogg 1793
  tutorial_2.ogg 1793
@@ -227,7 +227,6 @@ soundsfile version 3
  punch_5.ogg 2384
  player_hit_by_arrow.ogg 2720
  fl_pistol.wav 2720
- automatic_single_shoot.wav 2720
  man_excercise_1.ogg 1120
  man_excercise_2.ogg 1120
  man_excercise_4.ogg 1120
@@ -367,7 +366,7 @@ soundsfile version 3
  your_flag_returned.ogg 2721
  you_scored_a_point.ogg 2721
  enemy_scored_a_point.ogg 2721
-179
+178
 snd_click 769 1 0 0 
 snd_tutorial_1 1793 1 1 0 
 snd_tutorial_2 1793 1 2 0 
@@ -495,55 +494,54 @@ snd_mp_arrow_hit_target 2545 1 221 0
 snd_blunt_hit 2384 4 222 0 223 0 223 0 224 0 
 snd_player_hit_by_arrow 2720 1 225 0 
 snd_pistol_shot 2720 1 226 0 
-snd_automatic_shoot 2720 1 227 0 
-snd_man_grunt 1120 3 228 0 229 0 230 0 
-snd_man_breath_hard 2096 7 231 0 232 0 233 0 234 0 235 0 236 0 237 0 
-snd_man_stun 2096 1 238 0 
-snd_man_grunt_long 1888 6 239 0 240 0 241 0 242 0 243 0 244 0 
-snd_man_yell 2128 19 245 0 246 0 247 0 248 0 249 0 250 0 251 0 252 0 253 0 254 0 255 0 256 0 257 0 258 0 259 0 260 0 261 0 262 0 263 0 
-snd_man_warcry 80 7 264 0 265 0 266 0 267 0 268 0 269 0 270 0 
-snd_encounter_looters 2049 5 271 0 272 0 273 0 274 0 275 0 
-snd_encounter_bandits 2049 7 276 0 277 0 278 0 279 0 280 0 281 0 282 0 
-snd_encounter_farmers 2049 4 283 0 284 0 285 0 286 0 
-snd_encounter_sea_raiders 2049 4 287 0 288 0 289 0 290 0 
-snd_encounter_steppe_bandits 2049 5 291 0 292 0 293 0 294 0 295 0 
-snd_encounter_nobleman 2049 1 296 0 
-snd_encounter_vaegirs_ally 2049 2 297 0 298 0 
-snd_encounter_vaegirs_neutral 2049 4 299 0 300 0 301 0 302 0 
-snd_encounter_vaegirs_enemy 2049 4 299 0 300 0 301 0 302 0 
-snd_sneak_town_halt 1 2 303 0 304 0 
-snd_horse_walk 1328 4 305 0 306 0 307 0 308 0 
-snd_horse_trot 1600 4 309 0 310 0 311 0 312 0 
-snd_horse_canter 1856 4 313 0 314 0 315 0 316 0 
-snd_horse_gallop 2128 4 317 0 318 0 319 0 320 0 
-snd_horse_breath 1040 4 321 0 322 0 323 0 324 0 
-snd_horse_snort 528 5 325 0 326 0 327 0 328 0 329 0 
-snd_horse_low_whinny 3072 2 330 0 331 0 
-snd_block_fist 0 2 332 0 333 0 
+snd_man_grunt 1120 3 227 0 228 0 229 0 
+snd_man_breath_hard 2096 7 230 0 231 0 232 0 233 0 234 0 235 0 236 0 
+snd_man_stun 2096 1 237 0 
+snd_man_grunt_long 1888 6 238 0 239 0 240 0 241 0 242 0 243 0 
+snd_man_yell 2128 19 244 0 245 0 246 0 247 0 248 0 249 0 250 0 251 0 252 0 253 0 254 0 255 0 256 0 257 0 258 0 259 0 260 0 261 0 262 0 
+snd_man_warcry 80 7 263 0 264 0 265 0 266 0 267 0 268 0 269 0 
+snd_encounter_looters 2049 5 270 0 271 0 272 0 273 0 274 0 
+snd_encounter_bandits 2049 7 275 0 276 0 277 0 278 0 279 0 280 0 281 0 
+snd_encounter_farmers 2049 4 282 0 283 0 284 0 285 0 
+snd_encounter_sea_raiders 2049 4 286 0 287 0 288 0 289 0 
+snd_encounter_steppe_bandits 2049 5 290 0 291 0 292 0 293 0 294 0 
+snd_encounter_nobleman 2049 1 295 0 
+snd_encounter_vaegirs_ally 2049 2 296 0 297 0 
+snd_encounter_vaegirs_neutral 2049 4 298 0 299 0 300 0 301 0 
+snd_encounter_vaegirs_enemy 2049 4 298 0 299 0 300 0 301 0 
+snd_sneak_town_halt 1 2 302 0 303 0 
+snd_horse_walk 1328 4 304 0 305 0 306 0 307 0 
+snd_horse_trot 1600 4 308 0 309 0 310 0 311 0 
+snd_horse_canter 1856 4 312 0 313 0 314 0 315 0 
+snd_horse_gallop 2128 4 316 0 317 0 318 0 319 0 
+snd_horse_breath 1040 4 320 0 321 0 322 0 323 0 
+snd_horse_snort 528 5 324 0 325 0 326 0 327 0 328 0 
+snd_horse_low_whinny 3072 2 329 0 330 0 
+snd_block_fist 0 2 331 0 332 0 
 snd_man_hit_blunt_weak 2640 5 146 0 153 0 154 0 155 0 156 0 
 snd_man_hit_blunt_strong 2640 5 146 0 153 0 154 0 155 0 156 0 
 snd_man_hit_pierce_weak 2640 5 146 0 153 0 154 0 155 0 156 0 
 snd_man_hit_pierce_strong 2640 5 146 0 153 0 154 0 155 0 156 0 
 snd_man_hit_cut_weak 2640 5 146 0 153 0 154 0 155 0 156 0 
 snd_man_hit_cut_strong 2640 5 146 0 153 0 154 0 155 0 156 0 
-snd_man_victory 2640 10 334 0 335 0 336 0 337 0 338 0 339 0 340 0 341 0 342 0 343 0 
-snd_fire_loop 1174 1 344 0 
-snd_torch_loop 1174 1 344 0 
+snd_man_victory 2640 10 333 0 334 0 335 0 336 0 337 0 338 0 339 0 340 0 341 0 342 0 
+snd_fire_loop 1174 1 343 0 
+snd_torch_loop 1174 1 343 0 
 snd_dummy_hit 144 2 130 0 132 0 
 snd_dummy_destroyed 144 1 137 0 
 snd_gourd_destroyed 144 1 137 0 
-snd_cow_moo 2193 1 345 0 
-snd_cow_slaughter 2193 1 346 0 
-snd_distant_dog_bark 2097 4 347 0 348 0 349 0 350 0 
-snd_distant_owl 2353 3 351 0 352 0 353 0 
-snd_distant_chicken 2097 2 354 0 355 0 
-snd_distant_carpenter 817 2 356 0 357 0 
-snd_distant_blacksmith 1073 1 358 0 
-snd_arena_ambiance 899 1 359 0 
-snd_town_ambiance 899 1 360 0 
-snd_tutorial_fail 1793 1 361 0 
-snd_your_flag_taken 2721 1 362 0 
-snd_enemy_flag_taken 2721 1 363 0 
-snd_flag_returned 2721 1 364 0 
-snd_team_scored_a_point 2721 1 365 0 
-snd_enemy_scored_a_point 2721 1 366 0 
+snd_cow_moo 2193 1 344 0 
+snd_cow_slaughter 2193 1 345 0 
+snd_distant_dog_bark 2097 4 346 0 347 0 348 0 349 0 
+snd_distant_owl 2353 3 350 0 351 0 352 0 
+snd_distant_chicken 2097 2 353 0 354 0 
+snd_distant_carpenter 817 2 355 0 356 0 
+snd_distant_blacksmith 1073 1 357 0 
+snd_arena_ambiance 899 1 358 0 
+snd_town_ambiance 899 1 359 0 
+snd_tutorial_fail 1793 1 360 0 
+snd_your_flag_taken 2721 1 361 0 
+snd_enemy_flag_taken 2721 1 362 0 
+snd_flag_returned 2721 1 363 0 
+snd_team_scored_a_point 2721 1 364 0 
+snd_enemy_scored_a_point 2721 1 365 0 

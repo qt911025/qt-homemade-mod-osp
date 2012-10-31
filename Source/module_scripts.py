@@ -11,6 +11,7 @@ from header_triggers import *
 from header_terrain_types import *
 from header_music import *
 from ID_animations import *
+import types
 
 
 ####################################################################################################################
@@ -20,20 +21,22 @@ from ID_animations import *
 # 2) Operation block: This must be a valid operation block. See header_operations.py for reference.
 ####################################################################################################################
 
-
+##delay script system begin
 def set_num_of_params_in_each_script():
   contents = []
   for i_script in xrange(len(scripts)):
     statement_block = scripts[i_script][1]
-    for i_statement in xrange(len(statement_block)):
-      operation = i_statement[0]
+    for statement in statement_block:
+      if ((type(statement) != types.ListType) and (type(statement) != types.TupleType)):
+        continue
+      operation = statement[0]
       param_num = 0
       if operation == store_script_param_1 and param_num < 1:
         param_num = 1
       elif operation == store_script_param_2 and param_num < 2:
         param_num = 2
-      elif operation == store_script_param and param_num < i_statement[2]:
-        param_num = i_statement[2]
+      elif operation == store_script_param and param_num < statement[2]:
+        param_num = statement[2]
     contents.append((item_set_slot,"itm_param_num_of_script",i_script,param_num))
   return contents
 
@@ -43,14 +46,14 @@ def generate_call_script_scripts(num):
     statement_block = []
     call_script_statement = [call_script,":script_id"]
     statement_block.append((store_script_param_1,":script_id"))
-    for j in xrange(i)
+    for j in xrange(i):
       statement_block.append((assign,":param_"+str(j+1),0))
       statement_block.append((item_get_slot,":param_"+str(j+1),"itm_param_list",j))
       call_script_statement.append(":param_"+str(j+1))
     statement_block.append(call_script_statement[:])
     result.append(("call_script_"+str(i),statement_block[:]))
   return result
-  
+##delay script system end
 scripts = [
   #script_game_get_use_string
   # This script is called from the game engine for getting using information text
@@ -6365,7 +6368,27 @@ scripts = [
         (try_end),
       (try_end),
       ]),
+    
+    ##delay_script_test
+    #script_spawn_missile_at_point
+    ("spawn_missile_at_point",[
+      (store_script_param,":attacker_agent",1),
+      (store_script_param,":agent_cur_weapon",2),
+      (store_script_param,":cur_ammo_id",3),
+      (store_script_param,":pos_x",4),
+      (store_script_param,":pos_y",5),
+      (store_script_param,":pos_z",6),
+      (init_position,pos1),
+      (position_set_x,":pos_x"),
+      (position_set_y,":pos_y"),
+      (position_set_z,":pos_z"),
+      (agent_is_human,":attacker_agent"),
+      (agent_is_alive,":attacker_agent"),
+      (add_missile,":attacker_agent", pos1,0, ":agent_cur_weapon", imod_plain, ":cur_ammo_id",imod_plain),
+    ]),
 ]
+
+##delay script system begin
 scripts.extend(generate_call_script_scripts(max_params_num_plus_1))
 ex_scripts = [
   ##script_initialize_param_num_of_script
@@ -6377,12 +6400,11 @@ ex_scripts = [
     (store_script_param_1,":script_id"),
     (store_script_param_2,":delay_seconds"),
     
-    (store_add,":time_slot_no","$current_seconds",":delay_seconds"),
-    (val_mod,":time_slot_no",max_seconds_step),
+    (val_max,":delay_seconds",1),#delay 1 seconds at least,or call the script directly,plz.
+    (store_add,":time_slot_no","$cur_time_slot",":delay_seconds"),
     (try_begin),
-      (lt,":time_slot_no",0),
-      (val_add,":time_slot_no",max_seconds_step),
-      (val_min,":time_slot_no",max_seconds_step),
+      (ge,":time_slot_no",max_seconds_step),
+      (val_mod,":time_slot_no",max_seconds_step),
     (try_end),
     (item_get_slot,":param_num","itm_param_num_of_script",":script_id"),
     (val_min,":param_num",max_params_num),
@@ -6402,7 +6424,6 @@ ex_scripts = [
     (party_set_slot,":recorder_party_no",":end_pointer",":script_id"),
     (val_add,":end_pointer",1),
     
-    # (assign,":param_val",0),
     (try_for_range,":param_no",0,":param_num"),
       (item_get_slot,":param_val","itm_param_list",":param_no"),
       (party_set_slot,":recorder_party_no",":end_pointer",":param_val"),
@@ -6418,13 +6439,9 @@ ex_scripts = [
     (gt,":recorder_party_no",0),
     (item_get_slot,":end_pointer","itm_delay_script_end_pointer_queue",":time_slot_no"),
     (gt,":end_pointer",0),
-    # (assign,":slot_pointer",0),
-    # (assign,":param_pointer",0),
-    # (assign,":param_value",0),
-    (assign,":current_script_param_num",0),
     (try_for_range,":slot_pointer",0,":end_pointer"),
       (party_get_slot,":script_no",":recorder_party_no",":slot_pointer"),
-      (itm_get_slot,":param_num","itm_param_num_of_script",":script_no"),
+      (item_get_slot,":param_num","itm_param_num_of_script",":script_no"),
       (try_begin),
         (gt,":param_num",0),
         (val_min,":param_num",max_params_num),
@@ -6463,8 +6480,6 @@ ex_scripts = [
       (item_set_slot,"itm_param_list",":param_slot_no",0),
     (try_end),
   ]),
-  
-  
 ]
 
 scripts.extend(ex_scripts)
@@ -6474,3 +6489,4 @@ for i_script in xrange(len(scripts)):
     statement_block = scripts[i_script][1]
     statement_block.append((call_script,"script_initialize_param_num_of_script"))
     break
+##delay script system end

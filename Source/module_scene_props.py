@@ -1100,25 +1100,25 @@ scene_props = [
 
   ("custom_banner_01",0,"custom_banner_01","0",
    [
-     (ti_on_init_scene_prop,
-      [
-        (party_get_slot, ":leader_troop", "$g_encountered_party", slot_town_lord),
-        (try_begin),
-          (ge, ":leader_troop", 0),
-          (cur_scene_prop_set_tableau_material, "tableau_custom_banner_default", ":leader_troop"),
-        (try_end),
-        ]),
+     # (ti_on_init_scene_prop,
+      # [
+        # (party_get_slot, ":leader_troop", "$g_encountered_party", slot_town_lord),
+        # (try_begin),
+          # (ge, ":leader_troop", 0),
+          # (cur_scene_prop_set_tableau_material, "tableau_custom_banner_default", ":leader_troop"),
+        # (try_end),
+        # ]),
      ]),
   ("custom_banner_02",0,"custom_banner_02","0",
    [
-     (ti_on_init_scene_prop,
-      [
-        (party_get_slot, ":leader_troop", "$g_encountered_party", slot_town_lord),
-        (try_begin),
-          (ge, ":leader_troop", 0),
-          (cur_scene_prop_set_tableau_material, "tableau_custom_banner_default", ":leader_troop"),
-        (try_end),
-        ]),
+     # (ti_on_init_scene_prop,
+      # [
+        # (party_get_slot, ":leader_troop", "$g_encountered_party", slot_town_lord),
+        # (try_begin),
+          # (ge, ":leader_troop", 0),
+          # (cur_scene_prop_set_tableau_material, "tableau_custom_banner_default", ":leader_troop"),
+        # (try_end),
+        # ]),
      ]),
 
   ("banner_a",0,"banner_a01","0", []),

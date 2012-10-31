@@ -1202,3 +1202,4 @@ g_multiplayer_duel_start_time
 love_interest_in_town_7
 love_interest_in_town_8
 number_of_controversial_policy_decisions
+cur_time_slot

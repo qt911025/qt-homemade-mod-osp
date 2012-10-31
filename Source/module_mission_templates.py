@@ -342,8 +342,8 @@ common_automatic = (
 			(agent_get_attack_action, ":action_state", ":attacker_agent"),
 			(try_begin),
 				(eq,":action_state",1),
-                (item_get_type, ":item_type", ":agent_cur_weapon"),
-                (eq,":item_type",itp_type_musket),
+        (item_get_type, ":item_type", ":agent_cur_weapon"),
+        (eq,":item_type",itp_type_musket),
                 
 				#ticker trigger
 				(agent_get_slot,":ticker_time",":attacker_agent",slot_agent_shoot_time_ticker),
@@ -351,39 +351,39 @@ common_automatic = (
 					(le,":ticker_time",0),
 					#ticker trigger
 					(item_get_slot,":ticker_time",":agent_cur_weapon",slot_item_speed_rtng),
-                    (val_max,":ticker_time",1),
+          (val_max,":ticker_time",1),
 					(store_div,":ticker_time",200,":ticker_time"),
 					(agent_set_slot,":attacker_agent",slot_agent_shoot_time_ticker,":ticker_time"),
-                    (agent_get_item_cur_ammo, ":cur_ammo", ":attacker_agent"),
+          (agent_get_item_cur_ammo, ":cur_ammo", ":attacker_agent"),
 					(gt,":cur_ammo",0),
                     
-                    #match the right ammmo type
-                    (assign,":cur_ammo_id",-1),
-                    (assign,":item_slot_num",4),
-                    (try_for_range,":cur_item_slot",0,":item_slot_num"),
-                    	(agent_get_item_slot, ":item_no", ":attacker_agent", ":cur_item_slot"),
-                        (ge,":cur_ammo_id",0),
-                        (item_get_type, ":item_type", ":item_no"),
-                        (eq,":item_type",itp_type_bullets),
-                        (assign,":cur_ammo_id",":item_no"),
-                    	(assign,":item_slot_num",0),#break
-                    (try_end),
-                    (try_begin),
-                        (lt,":cur_ammo_id",0),
-                        (assign,":cur_ammo_id","itm_ha_cartridges"),#as default
-                    (try_end),
+          #match the right ammmo type
+          (assign,":cur_ammo_id",-1),
+          (assign,":item_slot_num",4),
+          (try_for_range,":cur_item_slot",0,":item_slot_num"),
+            (agent_get_item_slot, ":item_no", ":attacker_agent", ":cur_item_slot"),
+            (ge,":cur_ammo_id",0),
+            (item_get_type, ":item_type", ":item_no"),
+            (eq,":item_type",itp_type_bullets),
+            (assign,":cur_ammo_id",":item_no"),
+            (assign,":item_slot_num",0),#break
+          (try_end),
+          (try_begin),
+            (lt,":cur_ammo_id",0),
+            (assign,":cur_ammo_id","itm_ha_cartridges"),#as default
+          (try_end),
 
 					#get original position of weapon
 					(agent_get_look_position,pos24,":attacker_agent"),
 					(item_get_slot,":length",":agent_cur_weapon",slot_item_length),
 					(position_move_y, pos24,":length"),
 					(agent_get_horse,":attacker_agent_horse",":attacker_agent"),
-                    (agent_get_animation, ":attacker_animation", ":attacker_agent", 0),
+          (agent_get_animation, ":attacker_animation", ":attacker_agent", 0),
 					(try_begin),
-                        (this_or_next|eq,":attacker_animation","anim_walk_forward_crouch"),
-                        (eq,":attacker_animation","anim_stand_to_crouch"),
-                        (position_move_z,pos24,115,1),
-                    (else_try),
+            (this_or_next|eq,":attacker_animation","anim_walk_forward_crouch"),
+            (eq,":attacker_animation","anim_stand_to_crouch"),
+            (position_move_z,pos24,115,1),
+          (else_try),
 						(lt,":attacker_agent_horse",0),
 						(position_move_z,pos24,170,1),
 					(else_try),
@@ -393,7 +393,7 @@ common_automatic = (
 					##get weapon position after calculating accuracy
 					(copy_position,pos25,pos24),
 					(item_get_slot,":accuracy",":agent_cur_weapon",slot_item_accuracy),
-                    (val_max,":accuracy",1),
+          (val_max,":accuracy",1),
 					(store_div,":randomize_value",500,":accuracy"),
 					(store_random_in_range,":z",0,":randomize_value"),
 					(store_random_in_range,":x",0,":randomize_value"),
@@ -408,10 +408,10 @@ common_automatic = (
 					(particle_system_burst, "psys_rifle_smoke", pos24, 10),
 					(particle_system_burst, "psys_gun_fire", pos24, 20),
                     
-                    (item_get_slot,":shoot_speed",":agent_cur_weapon",slot_item_shoot_speed),
-                    (set_fixed_point_multiplier,1),
-                    (add_missile, ":attacker_agent", pos25, ":shoot_speed", ":agent_cur_weapon", imod_plain, ":cur_ammo_id",imod_plain),
-                    
+          (item_get_slot,":shoot_speed",":agent_cur_weapon",slot_item_shoot_speed),
+          (set_fixed_point_multiplier,1),
+          (add_missile, ":attacker_agent", pos25, ":shoot_speed", ":agent_cur_weapon", imod_plain, ":cur_ammo_id",imod_plain),
+
 					#reduce ammo
 					(val_sub,":cur_ammo",1),
 					(agent_set_ammo,":attacker_agent",":agent_cur_weapon",":cur_ammo"),
@@ -423,8 +423,8 @@ common_automatic = (
 				(agent_get_defend_action, ":defend_action_state", ":attacker_agent"),
 				(this_or_next|gt,":defend_action_state",0),
 				(gt,":action_state",1),
-                (item_get_slot,":ticker_time",":agent_cur_weapon",slot_item_speed_rtng),
-                (val_max,":ticker_time",1),
+        (item_get_slot,":ticker_time",":agent_cur_weapon",slot_item_speed_rtng),
+        (val_max,":ticker_time",1),
 				(store_div,":ticker_time",800,":ticker_time"),
 				(agent_set_slot,":attacker_agent",slot_agent_shoot_time_ticker,":ticker_time"),
 			(try_end),
@@ -432,7 +432,23 @@ common_automatic = (
 	]
 )
 #New automatics end
-
+#delay script system begin
+common_init_delay_script = (ti_before_mission_start, 0, 0, [],
+ [
+  (call_script,"script_clear_delay_script_data"),
+ ]
+)
+common_delay_script = (delay_script_call_interval, 0, 0, [],
+ [
+  (val_add,"$cur_time_slot",1),
+  (try_begin),
+    (ge,"$cur_time_slot",max_seconds_step),
+    (val_mod,"$cur_time_slot",max_seconds_step),
+  (try_end),
+  (call_script,"script_call_scripts_in_delay_script_queue","$cur_time_slot"),
+ ]
+)
+#delay script system end
 
 tournament_triggers = []
 
@@ -781,7 +797,7 @@ mission_templates = [
 
 
  (
-   "test_scene",mtf_battle_mode|mtf_synch_inventory,-1,
+   "test_scene_1",mtf_battle_mode|mtf_synch_inventory,-1,
    "test scene 1",
    [
  (0,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[itm_test_rifle,itm_ha_cartridges]),
@@ -840,5 +856,66 @@ mission_templates = [
     common_automatic,
     ],
  ),
-
+ (
+   "test_scene_2",mtf_battle_mode|mtf_synch_inventory,-1,
+   "test scene 2",
+   [
+ (0,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[itm_test_rifle,itm_ha_cartridges]),
+ (1,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[itm_test_rifle,itm_ha_cartridges]),
+],
+[
+#	(0,0,0,[(key_clicked,key_b)],
+#	[
+#		(get_player_agent_no, ":player_agent"),
+#		(agent_get_position, pos0, ":player_agent"),
+#		(set_spawn_position, pos0),
+#		(spawn_scene_prop, "spr_catapult_destructible"),
+#	],
+#	),
+	
+#	(0,0,0,[(key_clicked,key_n)],
+#	[
+#		(display_log_message,"@Printing agents information:"),
+#		(try_for_agents,":agent_no"),
+#			(str_clear,s0),
+#			(assign,reg0,":agent_no"),
+#			(str_store_string,s0,"@ ID: {reg0} Agent name: "),
+#			(display_log_message,s0),
+#			(str_store_agent_name,s0,":agent_no"),
+#			(display_log_message,s0),
+#			(try_begin),
+#				(neg|agent_is_non_player,":agent_no"),
+#				(str_store_string,s0,"@ Agent is player"),
+#				(display_log_message,s0),
+#			(try_end),
+#			(try_begin),
+#				(agent_is_ally,":agent_no"),
+#				(str_store_string,s0,"@ Agent is ally"),
+#				(display_log_message,s0),
+#			(try_end),
+#		(try_end),
+#	],
+#	),
+	(0,0,0,[(key_clicked,key_j)],
+	[
+		(add_visitors_to_current_scene,0,"trp_test_troop",50, mtef_team_0, 0),
+	],
+	),
+    (0,0,0,[(key_clicked,key_k)],
+    [
+    	(add_visitors_to_current_scene,1,"trp_test_troop",50, mtef_team_1, 0),
+    ],
+    ),    
+	##tab pressed
+  	(ti_tab_pressed, 0, 0, [],
+  	 [
+		(finish_mission,0),
+		],
+	),
+#	automatic_player,
+    common_automatic,
+    common_init_delay_script,
+    common_delay_script
+    ],
+ ),
 ]
