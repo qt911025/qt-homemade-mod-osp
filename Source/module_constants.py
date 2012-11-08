@@ -1783,6 +1783,7 @@ ACHIEVEMENT_LADY_OF_THE_LAKE = 80,
 
 ##delay script system begin
 call_script_scripts_begin = "script_call_script_0"
+delay_script_slot_begin = "itm_delay_script_slot_0"
 max_params_num=9
 max_params_num_plus_1=max_params_num+1
 max_seconds_step=256

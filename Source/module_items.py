@@ -23,6 +23,15 @@ from header_triggers import *
 #  10) [Optional] Factions: List of factions that item can be found as merchandise.
 ####################################################################################################################
 
+
+##delay script begin
+def generate_delay_script_slots(num):
+  content = []
+  for i in xrange(num):
+    content.append(["delay_script_slot_"+str(i), "Delay Script slot "+str(i), [("shield_round_a",0)], 0, 0, 1, 0, 0])
+  return content
+##delay script end
+
 # Some constants for ease of use.
 imodbits_none = 0
 imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
@@ -1117,12 +1126,12 @@ items = [
   (position_get_z,":pos_z",pos1),
   (val_add,":pos_z",200),
   (item_set_slot,"itm_param_list",0,":attacker_agent"),
-  (item_set_slot,"itm_param_list",1,"itm_test_magic_swords"),
+  (item_set_slot,"itm_param_list",1,"itm_test_magic_swords_sub"),
   (item_set_slot,"itm_param_list",2,"itm_test_magic_swords_sub"),
   (item_set_slot,"itm_param_list",3,":pos_x"),
   (item_set_slot,"itm_param_list",4,":pos_y"),
   (item_set_slot,"itm_param_list",5,":pos_z"),
-  (call_script,"script_add_script_after_seconds",5),
+  (call_script,"script_add_script_after_seconds","script_spawn_missile_at_point",5),
 ])]],
 ["test_magic_swords_sub","Swords", [("sword_medieval_b_small",0),("sword_medieval_b_small_scabbard", ixmesh_carry)], itp_type_thrown |itp_primary|itp_no_pick_up_from_ground ,itcf_throw_javelin|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn, 
 155 , weight(1.5)|difficulty(0)|spd_rtng(95) | shoot_speed(28) | thrust_damage(30 ,  pierce)|max_ammo(7)|weapon_length(85),imodbits_sword_high ],
@@ -1133,6 +1142,7 @@ items = [
 ["param_num_of_script", "Parameter Number of Script", [("shield_round_a",0)], 0, 0, 1, 0, 0],
 ["param_list", "Parameter List", [("shield_round_a",0)], 0, 0, 1, 0, 0],
 ["delay_script_end_pointer_queue", "Delay Script End Pointer Queue", [("shield_round_a",0)], 0, 0, 1, 0, 0],
-["delay_script_queue", "Delay Script Queue", [("shield_round_a",0)], 0, 0, 1, 0, 0],
-#delay script system end
+
 ]
+items.extend(generate_delay_script_slots(max_seconds_step))
+#delay script system end

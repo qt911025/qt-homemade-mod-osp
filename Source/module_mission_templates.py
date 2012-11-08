@@ -435,6 +435,7 @@ common_automatic = (
 #delay script system begin
 common_init_delay_script = (ti_before_mission_start, 0, 0, [],
  [
+  (call_script,"script_initialize_param_num_of_script"),#this statement is just for this mod only,because this mod has not sp mode.
   (call_script,"script_clear_delay_script_data"),
  ]
 )
@@ -906,6 +907,19 @@ mission_templates = [
     	(add_visitors_to_current_scene,1,"trp_test_troop",50, mtef_team_1, 0),
     ],
     ),    
+    (0,0,0,[(key_clicked,key_b)],
+    [
+    	(get_player_agent_no, ":player_agent"),
+      (agent_get_position, pos0, ":player_agent"),
+      (init_position,pos1),
+      (position_copy_origin,pos1,pos0),
+      (position_get_x,":pos_x",pos1),
+      (position_get_y,":pos_y",pos1),
+      (position_get_z,":pos_z",pos1),
+      (val_add,":pos_z",200),
+      (call_script,"script_spawn_missile_at_point",":player_agent","itm_test_magic_swords_sub","itm_test_magic_swords_sub",":pos_x",":pos_y",":pos_z"),
+    ],
+    ),  
 	##tab pressed
   	(ti_tab_pressed, 0, 0, [],
   	 [
