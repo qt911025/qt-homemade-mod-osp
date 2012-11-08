@@ -1096,7 +1096,7 @@ items = [
 ["mail_boots_for_tableau", "Mail Boots", [("mail_boots_a",0)], itp_type_foot_armor | itp_attach_armature  ,0,
  1, weight(3)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(1) ,imodbits_armor ],
 
-["test_rifle", "Automatic Siege Crossbow", [("crossbow_c",0)], itp_type_musket |itp_primary|itp_two_handed ,itcf_shoot_crossbow|itcf_carry_crossbow_back, 
+["test_rifle", "Automatic Siege Crossbow", [("crossbow_c",0)], itp_type_musket |itp_primary|itp_two_handed ,itc_rifle, 
  0 , weight(10)|difficulty(0)|spd_rtng(110)|weapon_length(65)|  shoot_speed(200) | thrust_damage(58,pierce)|max_ammo(30)|accuracy(100),imodbits_none,
  [(ti_on_init_item, [(item_set_slot,"itm_test_rifle",slot_item_shot_sound,"snd_release_crossbow"),
                      (item_set_slot,"itm_test_rifle",slot_item_shoot_speed,200),
