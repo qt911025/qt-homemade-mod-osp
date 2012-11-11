@@ -6397,8 +6397,8 @@ ex_scripts = [
   ##The scripts following can't be called by other custom scripts!
   ##script_add_script_after_seconds
   ("add_script_after_seconds",[
-    (store_script_param_1,":script_id"),
-    (store_script_param_2,":delay_seconds"),
+    (store_script_param,":delay_seconds",1),
+    (store_script_param,":script_id",2),
     
     (val_max,":delay_seconds",1),#delay 1 seconds at least,or call the script directly,plz.
     (store_add,":time_slot_no","$cur_time_slot",":delay_seconds"),
@@ -6414,11 +6414,14 @@ ex_scripts = [
 
     (item_set_slot,":recorder_item_no",":end_pointer",":script_id"),
     (val_add,":end_pointer",1),
-    
-    (try_for_range,":param_no",0,":param_num"),
-      (item_get_slot,":param_val","itm_param_list",":param_no"),
-      (item_set_slot,":recorder_item_no",":end_pointer",":param_val"),
-      (val_add,":end_pointer",1),
+    (try_begin),
+      (assign,":this_script_param_no",3),
+      (try_for_range,":unused",0,":param_num"),
+        (store_script_param,":param_val",":this_script_param_no"),
+        (item_set_slot,":recorder_item_no",":end_pointer",":param_val"),
+        (val_add,":this_script_param_no",1),
+        (val_add,":end_pointer",1),
+      (try_end),
     (try_end),
     (item_set_slot,"itm_delay_script_end_pointer_queue",":time_slot_no",":end_pointer"),
   ]),
