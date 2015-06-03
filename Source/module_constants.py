@@ -135,8 +135,13 @@ slot_agent_duel_start_time        = 22
 
 slot_agent_walker_occupation      = 25
 
-slot_agent_shoot_time_ticker      = 26#ticker_of_player is different from ticker_of_ai
-slot_agent_attack_switch      = 27
+#Equipment cost fix
+slot_agent_bought_horse           = 26
+###
+
+
+slot_agent_shoot_time_ticker      = 27#ticker_of_player is different from ticker_of_ai
+slot_agent_attack_switch      = 28
     
 ########################################################
 ##  FACTION SLOTS          #############################
@@ -1774,7 +1779,7 @@ ACHIEVEMENT_IRON_BEAR = 72,
 ACHIEVEMENT_LEGENDARY_RASTAM = 73,
 ACHIEVEMENT_SVAROG_THE_MIGHTY = 74,
 
-ACHIEVEMENT_MEN_HANDLER = 75,
+ACHIEVEMENT_MAN_HANDLER = 75,
 ACHIEVEMENT_GIRL_POWER = 76,
 ACHIEVEMENT_QUEEN = 77,
 ACHIEVEMENT_EMPRESS = 78,
