@@ -1,5 +1,29 @@
 #!/bin/env bash
 
+touch ID_animations.py
+touch ID_factions.py
+touch ID_info_pages.py
+touch ID_items.py
+touch ID_map_icons.py
+touch ID_menus.py
+touch ID_meshes.py
+touch ID_mission_templates.py
+touch ID_music.py
+touch ID_particle_systems.py
+touch ID_parties.py
+touch ID_party_templates.py
+touch ID_postfx_params.py
+touch ID_presentations.py
+touch ID_quests.py
+touch ID_scene_props.py
+touch ID_scenes.py
+touch ID_scripts.py
+touch ID_skills.py
+touch ID_sounds.py
+touch ID_strings.py
+touch ID_tableau_materials.py
+touch ID_troops.py
+
 python process_init.py
 python process_global_variables.py
 python process_strings.py
