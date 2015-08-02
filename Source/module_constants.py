@@ -24,8 +24,8 @@ slot_item_urban_demand             = 11 #consumer demand for a good in town, mea
 slot_item_rural_demand             = 12 #consumer demand in villages, measured in abstract units
 slot_item_desert_demand            = 13 #consumer demand in villages, measured in abstract units
 
-slot_item_production_slot          = 14 
-slot_item_production_string        = 15 
+slot_item_production_slot          = 14
+slot_item_production_string        = 15
 
 slot_item_tied_to_good_price       = 20 #ie, weapons and metal armor to tools, padded to cloth, leather to leatherwork, etc
 
@@ -51,60 +51,10 @@ slot_item_multiplayer_availability_linked_list_begin = 61 #temporary, can be mov
 
 slot_item_is_automatic    = 62#0 is none ,1 is automatic ,others is the number of shotted bullet when burst
 slot_item_shot_sound    = 63#just for automatic
-## CC
 
 proficiency_limit_increase       = 120
 reinforcement_cost_player        = 800
 
-armor_cloth                   = 0
-armor_armor                   = 1
-armor_plate                   = 2
-
-wpn_setting_1                 = 1
-wpn_setting_2                 = 2
-armor_setting                 = 3
-horse_setting                 = 4
-
-slot_item_difficulty              = 65
-slot_item_weight                  = 66
-slot_armor_type                   = 67
-slot_weapon_proficiency           = 68
-#slot_item_modifier_quality        = 69
-slot_item_food_portion            = 69
-slot_item_cant_on_horseback       = 70
-slot_item_type_not_for_sell       = 71
-slot_item_modifier_multiplier     = 72
-slot_item_modifier_quality        = 73
-#slot_item_best_modifier           = 73
-slot_item_alternate               = 74
-slot_item_two_hand_one_hand       = 75
-slot_item_head_armor              = 76
-slot_item_body_armor              = 77
-slot_item_leg_armor               = 78
-slot_item_length                  = 79
-slot_item_speed_rtng              = 80
-slot_item_shoot_speed             = 81
-
-# slots hack
-  #### Autoloot improved by rubik begin
-slot_item_thrust_damage      = slot_item_head_armor
-slot_item_swing_damage       = slot_item_body_armor
-
-slot_item_horse_speed        = slot_item_head_armor
-slot_item_horse_armor        = slot_item_body_armor
-slot_item_horse_health       = slot_item_leg_armor
-slot_item_horse_charge       = slot_item_length
-slot_item_horse_maneuver     = slot_item_speed_rtng
-
-#modified constants
-slot_item_shield_width       = slot_item_length
-slot_item_shield_height      = slot_item_head_armor
-slot_item_shield_resistance  = slot_item_body_armor
-slot_item_shield_hp          = slot_item_leg_armor
-  #### Autoloot improved by rubik end
-# CC
-
-slot_item_accuracy           = slot_item_leg_armor
 ########################################################
 ##  AGENT SLOTS            #############################
 ########################################################
@@ -142,7 +92,7 @@ slot_agent_bought_horse           = 26
 
 slot_agent_shoot_time_ticker      = 27#ticker_of_player is different from ticker_of_ai
 slot_agent_attack_switch      = 28
-    
+
 ########################################################
 ##  FACTION SLOTS          #############################
 ########################################################
@@ -383,7 +333,7 @@ slot_faction_sum_advice_about_factions_begin 			= 150
 # argument_commons      = 2
 
 # argument_benefit      = 3 #deprecate for reward
-# argument_reward       = 3 
+# argument_reward       = 3
 
 # argument_victory      = 4
 # argument_lords        = 5
@@ -440,7 +390,7 @@ slot_faction_sum_advice_about_factions_begin 			= 150
 # slot_center_current_improvement   = 124
 # slot_center_improvement_end_hour  = 125
 
-# slot_party_last_traded_center     = 126 
+# slot_party_last_traded_center     = 126
 
 
 
@@ -530,7 +480,7 @@ slot_faction_sum_advice_about_factions_begin 			= 150
 # num_trade_goods = itm_siege_supply - itm_spice
 # slot_town_trade_good_productions_begin       = 500 #a harmless number, until it can be deprecated
 
-# #These affect production but in some cases also demand, so it is perhaps easier to itemize them than to have separate 
+# #These affect production but in some cases also demand, so it is perhaps easier to itemize them than to have separate
 
 # slot_village_number_of_cattle   = 205
 # slot_center_head_cattle         = 205 #dried meat, cheese, hides, butter
@@ -695,7 +645,7 @@ slot_troop_occupation          = 2  # 0 = free, 1 = merchant
 #homage_feudal   =              = 3 #
 
 
-slot_troop_state               = 3  
+slot_troop_state               = 3
 slot_troop_last_talk_time      = 4
 slot_troop_met                 = 5 #i also use this for the courtship state -- may become cumbersome
 slot_troop_courtship_state     = 5 #2 professed admiration, 3 agreed to seek a marriage, 4 ended relationship
@@ -750,7 +700,7 @@ slot_troop_father              = 31
 slot_troop_mother              = 32
 slot_troop_guardian            = 33 #Usually siblings are identified by a common parent.This is used for brothers if the father is not an active npc. At some point we might introduce geneologies
 slot_troop_betrothed           = 34 #Obviously superseded once slot_troop_spouse is filled
-#other relations are derived from one's parents 
+#other relations are derived from one's parents
 #slot_troop_daughter            = 33
 #slot_troop_son                 = 34
 #slot_troop_sibling             = 35
@@ -963,14 +913,14 @@ slot_troop_enemy_routed_agents                  = 148
 
 #Special quest slots
 slot_troop_mission_participation        = 149
-mp_unaware                              = 0 
-mp_stay_out                             = 1 
-mp_prison_break_fight                   = 2 
-mp_prison_break_stand_back              = 3 
-mp_prison_break_escaped                 = 4 
-mp_prison_break_caught                  = 5 
+mp_unaware                              = 0
+mp_stay_out                             = 1
+mp_prison_break_fight                   = 2
+mp_prison_break_stand_back              = 3
+mp_prison_break_escaped                 = 4
+mp_prison_break_caught                  = 5
 
-#Below are some constants to expand the political system a bit. The idea is to make quarrels less random, but instead make them serve a rational purpose -- as a disincentive to lords to seek 
+#Below are some constants to expand the political system a bit. The idea is to make quarrels less random, but instead make them serve a rational purpose -- as a disincentive to lords to seek
 
 slot_troop_controversy                     = 150 #Determines whether or not a troop is likely to receive fief or marshalship
 slot_troop_recent_offense_type 	           = 151 #failure to join army, failure to support colleague
@@ -996,9 +946,9 @@ troop_slots_reserved_for_relations_start        = 165 #this is based on id_troop
 slot_troop_relations_begin				= 0 #this creates an array for relations between troops
 											#Right now, lords start at 165 and run to around 290, including pretenders
 slot_troop_backup_hp              = 167
-slot_troop_max_backup_hp          = 168											
+slot_troop_max_backup_hp          = 168
 
-											
+
 ########################################################
 ##  PLAYER SLOTS           #############################
 ########################################################
@@ -1198,7 +1148,7 @@ logent_village_extorted          = 2
 logent_caravan_accosted          = 3 #in caravan accosted, center and troop object are -1, and the defender's faction is the object
 logent_traveller_attacked        = 3 #in traveller attacked, origin and destination are center and troop object, and the attacker's faction is the object
 
-logent_helped_peasants           = 4 
+logent_helped_peasants           = 4
 
 logent_party_traded              = 5
 
@@ -1218,7 +1168,7 @@ logent_pledged_allegiance          = 21
 logent_liege_grants_fief_to_vassal = 22
 
 
-logent_renounced_allegiance      = 23 
+logent_renounced_allegiance      = 23
 
 logent_player_claims_throne_1    		               = 24
 logent_player_claims_throne_2    		               = 25
@@ -1249,7 +1199,7 @@ logent_lord_insults_lord_for_dishonor                  = 43
 
 
 
-logent_game_start                           = 45 
+logent_game_start                           = 45
 logent_poem_composed                        = 46 ##Not added
 logent_tournament_distinguished             = 47 ##Not added
 logent_tournament_won                       = 48 ##Not added
@@ -1309,7 +1259,7 @@ logent_war_declaration_types_end							= 95
 
 #lord reputation type, for commentaries
 #"Martial" will be twice as common as the other types
-lrep_none           = 0 
+lrep_none           = 0
 lrep_martial        = 1 #chivalrous but not terribly empathetic or introspective, - eg Richard Lionheart, your average 14th century French baron
 lrep_quarrelsome    = 2 #spiteful, cynical, a bit paranoid, possibly hotheaded - eg Robert Graves' Tiberius, some of Charles VI's uncles
 lrep_selfrighteous  = 3 #coldblooded, moralizing, often cruel - eg William the Conqueror, Timur, Octavian, Aurangzeb (although he is arguably upstanding instead, particularly after his accession)
@@ -1325,9 +1275,9 @@ lrep_custodian      = 10 #used for commons, specifically ex-companions. Tries to
 #lreps specific to dependent noblewomen
 lrep_conventional    = 21 #Charlotte York in SATC seasons 1-2, probably most medieval aristocrats
 lrep_adventurous     = 22 #Tomboyish. However, this basically means that she likes to travel and hunt, and perhaps yearn for wider adventures. However, medieval noblewomen who fight are rare, and those that attempt to live independently of a man are rarer still, and best represented by pre-scripted individuals like companions
-lrep_otherworldly    = 23 #Prone to mysticism, romantic. 
+lrep_otherworldly    = 23 #Prone to mysticism, romantic.
 lrep_ambitious       = 24 #Lady Macbeth
-lrep_moralist        = 25 #Equivalent of upstanding or benefactor -- takes nobless oblige, and her traditional role as repository of morality, very seriously. Based loosely on Christine de Pisa 
+lrep_moralist        = 25 #Equivalent of upstanding or benefactor -- takes nobless oblige, and her traditional role as repository of morality, very seriously. Based loosely on Christine de Pisa
 
 #a more complicated system of reputation could include the following...
 
@@ -1342,7 +1292,7 @@ lrep_moralist        = 25 #Equivalent of upstanding or benefactor -- takes noble
 
 courtship_poem_tragic      = 1 #Emphasizes longing, Laila and Majnoon
 courtship_poem_heroic      = 2 #Norse sagas with female heroines
-courtship_poem_comic       = 3 #Emphasis on witty repartee -- Contrasto (Sicilian school satire) 
+courtship_poem_comic       = 3 #Emphasis on witty repartee -- Contrasto (Sicilian school satire)
 courtship_poem_mystic      = 4 #Sufi poetry. Song of Songs
 courtship_poem_allegoric   = 5 #Idealizes woman as a civilizing force -- the Romance of the Rose, Siege of the Castle of Love
 
@@ -1505,12 +1455,12 @@ slot_ms_additional_menu_p1            = 27
 
 	#MS Flag slots -begin
 slot_ms_was_used                      = 28
-	#MS Flag slots -end	
+	#MS Flag slots -end
 	#MS Event triger slots -begin
 slot_ms_script_after_construct        = 29
 slot_ms_script_after_construct_p1     = 30
 slot_ms_script_after_construct_p2     = 31
-slot_ms_script_after_construct_p3     = 32	
+slot_ms_script_after_construct_p3     = 32
 slot_ms_script_after_construct_p4     = 33
 slot_ms_script_after_construct_p5     = 34
 slot_ms_script_after_construct_p6     = 35
@@ -1535,7 +1485,7 @@ slot_ms_script_unsieged_p1            = 49
 slot_ms_script_unsieged_p2            = 50
 slot_ms_script_unsieged_p3            = 51
 	#MS Event triger slots -end
-	
+
 	#MS Officer slots -begin
 slot_ms_officer_lower_level_count        = 52
 slot_ms_officer_kostyak_count            = 53
@@ -1557,7 +1507,7 @@ slot_ms_officer_region_time             = 67
 slot_ms_officer_militiaman_time         = 68
 slot_ms_officer_mercenary_time          = 69
 	#MS Officer slots -end
-	
+
 	#MS Time triger slots -begin
 slot_ms_script_24_hour                = 70
 slot_ms_script_24_hour_p1             = 71
@@ -1582,7 +1532,7 @@ slot_ms_script_30_day_p5              = 87
 slot_ms_script_30_day_p6              = 88
 slot_ms_script_30_day_p7              = 89
 	#MS Time triger slots -end
-	
+
 	#MS Party constants -begin
 ms_party_has_element_start_slot       = slot_ms_script_30_day_p7 + 1
 ms_flag_none                   = 0
@@ -1622,7 +1572,7 @@ ms_flag_elite_cavalry_2        = 13
 ms_flag_elite_cavalry_3        = 14
 ms_flag_uniq_1                 = 15
 ms_flag_uniq_2                 = 16
-ms_flag_uniq_3                 = 17 
+ms_flag_uniq_3                 = 17
 ms_flag_region_1               = 18
 ms_flag_region_2               = 19
 ms_flag_region_3               = 20
@@ -1675,7 +1625,7 @@ flag_give_two_town = 1
 flag_give_nothing = 2
 flag_give_money = 3
 
-#sound 
+#sound
 
 #all_orders_begin = snd_order_all_back_10
 #archer_oders_shift = snd_order_archers_back_10 - all_orders_begin

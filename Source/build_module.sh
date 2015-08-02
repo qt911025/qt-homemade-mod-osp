@@ -55,6 +55,5 @@ python process_global_variables_unused.py
 python process_postfx.py
 
 rm ./*.pyc
-echo "______________________________"
+echo "__________________________________________________________________________________________"
 echo "Script processing has ended."
-read -p "Press [Enter] key to exit. . ."

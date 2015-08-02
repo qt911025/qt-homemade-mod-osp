@@ -57,14 +57,14 @@ def generate_call_script_scripts(num):
 scripts = [
   #script_game_get_use_string
   # This script is called from the game engine for getting using information text
-  # INPUT: used_scene_prop_id  
+  # INPUT: used_scene_prop_id
   # OUTPUT: s0
   ("game_get_use_string",
    [
      (store_script_param, ":instance_id", 1),
 
      (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
-     
+
      (try_begin),
        (this_or_next|eq, ":scene_prop_id", "spr_winch_b"),
        (eq, ":scene_prop_id", "spr_winch"),
@@ -85,17 +85,17 @@ scripts = [
        (this_or_next|eq, ":scene_prop_id", "spr_siege_ladder_move_12m"),
        (eq, ":scene_prop_id", "spr_siege_ladder_move_14m"),
        (assign, ":effected_object", ":scene_prop_id"),
-     (try_end),   
+     (try_end),
 
      (scene_prop_get_slot, ":item_situation", ":instance_id", scene_prop_open_or_close_slot),
-   
+
      (try_begin), #opening/closing portcullis
        (eq, ":effected_object", "spr_portcullis"),
 
        (try_begin),
          (eq, ":item_situation", 0),
          (str_store_string, s0, "str_open_gate"),
-       (else_try), 
+       (else_try),
          (str_store_string, s0, "str_close_gate"),
        (try_end),
      (else_try), #opening/closing door
@@ -143,7 +143,7 @@ scripts = [
    [
       (store_script_param, ":killer_agent_no", 1),
       (store_script_param, ":dead_agent_no", 2),
-      
+
 #      (try_begin),
 #        (ge, ":killer_agent_no", 0),
 #        (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
@@ -158,7 +158,7 @@ scripts = [
         (assign, ":dead_agent_team", -1),
       (try_end),
 
-        (try_begin), 
+        (try_begin),
           (ge, ":dead_agent_no", 0),
           (agent_is_human, ":dead_agent_no"),
           (try_begin),
@@ -177,7 +177,7 @@ scripts = [
 
           (try_begin),
             (assign, ":continue", 0),
-      
+
             (try_begin),
               (this_or_next|lt, ":killer_agent_no", 0), #if he killed himself (1a(team change) or 1b(self kill)) then decrease kill counts of killer player by one.
               (eq, ":killer_agent_no", ":dead_agent_no"),
@@ -185,10 +185,10 @@ scripts = [
             (try_end),
 
             (eq, ":continue", 1),
-                    
+
             (try_begin),
               (ge, ":killer_agent_no", 0),
-              (assign, ":responsible_agent", ":killer_agent_no"),                
+              (assign, ":responsible_agent", ":killer_agent_no"),
             (else_try),
               (assign, ":responsible_agent", ":dead_agent_no"),
             (try_end),
@@ -202,7 +202,7 @@ scripts = [
               (val_add, ":dead_agent_player_kill_count", -1),
               (player_set_kill_count, ":responsible_player", ":dead_agent_player_kill_count"),
             (try_end),
-          (try_end),               
+          (try_end),
         (try_end),
       (try_end),
     ]),
@@ -223,7 +223,7 @@ scripts = [
    [
      (try_begin),
        (multiplayer_is_server),
-  
+
        (assign, ":number_of_players_at_team_1", 0),
        (assign, ":number_of_players_at_team_2", 0),
        (get_max_players, ":num_players"),
@@ -236,9 +236,9 @@ scripts = [
          (else_try),
            (eq, ":player_team", 1),
            (val_add, ":number_of_players_at_team_2", 1),
-         (try_end),         
+         (try_end),
        (try_end),
- 
+
        (store_sub, ":difference_of_number_of_players", ":number_of_players_at_team_1", ":number_of_players_at_team_2"),
        (assign, ":number_of_players_will_be_moved", 0),
        (try_begin),
@@ -253,19 +253,19 @@ scripts = [
            (store_div, ":number_of_players_will_be_moved", ":difference_of_number_of_players", 2),
            (assign, ":team_with_more_players", 0),
            (assign, ":team_with_less_players", 1),
-         (try_end),          
-       (try_end),         
+         (try_end),
+       (try_end),
        #team balance checks are done
        (try_begin),
          (gt, ":number_of_players_will_be_moved", 0),
          (try_begin),
            (eq, "$g_team_balance_next_round", 1), #if warning is given
-           
+
            #auto team balance starts
-           (try_for_range, ":unused", 0, ":number_of_players_will_be_moved"), 
+           (try_for_range, ":unused", 0, ":number_of_players_will_be_moved"),
              (assign, ":max_player_join_time", 0),
              (assign, ":latest_joined_player_no", -1),
-             (get_max_players, ":num_players"),                               
+             (get_max_players, ":num_players"),
              (try_for_range, ":player_no", 0, ":num_players"),
                (player_is_active, ":player_no"),
                (player_get_team_no, ":player_team", ":player_no"),
@@ -281,7 +281,7 @@ scripts = [
                (ge, ":latest_joined_player_no", 0),
                (try_begin),
                  #if player is living add +1 to his kill count because he will get -1 because of team change while living.
-                 (player_get_agent_id, ":latest_joined_agent_id", ":latest_joined_player_no"), 
+                 (player_get_agent_id, ":latest_joined_agent_id", ":latest_joined_player_no"),
                  (ge, ":latest_joined_agent_id", 0),
                  (agent_is_alive, ":latest_joined_agent_id"),
 
@@ -313,28 +313,28 @@ scripts = [
                (multiplayer_send_message_to_player, ":latest_joined_player_no", multiplayer_event_force_start_team_selection),
              (try_end),
            (try_end),
-     
+
            #for only server itself-----------------------------------------------------------------------------------------------
            (call_script, "script_show_multiplayer_message", multiplayer_message_type_auto_team_balance_done, 0), #0 is useless here
-           #for only server itself-----------------------------------------------------------------------------------------------     
-           (get_max_players, ":num_players"),                               
+           #for only server itself-----------------------------------------------------------------------------------------------
+           (get_max_players, ":num_players"),
            (try_for_range, ":player_no", 1, ":num_players"),
              (player_is_active, ":player_no"),
-             (multiplayer_send_int_to_player, ":player_no", multiplayer_event_show_multiplayer_message, multiplayer_message_type_auto_team_balance_done), 
+             (multiplayer_send_int_to_player, ":player_no", multiplayer_event_show_multiplayer_message, multiplayer_message_type_auto_team_balance_done),
            (try_end),
            (assign, "$g_team_balance_next_round", 0),
            #auto team balance done
          (else_try),
            #tutorial message (next round there will be auto team balance)
            (assign, "$g_team_balance_next_round", 1),
-     
+
            #for only server itself-----------------------------------------------------------------------------------------------
            (call_script, "script_show_multiplayer_message", multiplayer_message_type_auto_team_balance_next, 0), #0 is useless here
-           #for only server itself-----------------------------------------------------------------------------------------------     
-           (get_max_players, ":num_players"),                               
+           #for only server itself-----------------------------------------------------------------------------------------------
+           (get_max_players, ":num_players"),
            (try_for_range, ":player_no", 1, ":num_players"),
              (player_is_active, ":player_no"),
-             (multiplayer_send_int_to_player, ":player_no", multiplayer_event_show_multiplayer_message, multiplayer_message_type_auto_team_balance_next), 
+             (multiplayer_send_int_to_player, ":player_no", multiplayer_event_show_multiplayer_message, multiplayer_message_type_auto_team_balance_next),
            (try_end),
          (try_end),
        (else_try),
@@ -362,17 +362,17 @@ scripts = [
 #       (agent_is_human, ":killer_agent_no"), #if killer agent is not horse
 #       (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
 #       (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-#     
+#
 #       (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_deathmatch),
 #       (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_duel),
 #       (neq, ":killer_agent_team", ":dead_agent_team"), #if these agents are enemies
 #
 #       (neq, ":dead_agent_no", ":killer_agent_no"), #if agents are different, do not remove it is needed because in deathmatch mod, self killing passes here because of this or next.
-#     
+#
 #       (try_begin),
-#         (neg|agent_is_non_player, ":dead_agent_no"), 
+#         (neg|agent_is_non_player, ":dead_agent_no"),
 #         (agent_get_player_id, ":dead_player_no", ":dead_agent_no"),
-#         (player_get_slot, ":dead_agent_equipment_value", ":dead_player_no", slot_player_total_equipment_value),             
+#         (player_get_slot, ":dead_agent_equipment_value", ":dead_player_no", slot_player_total_equipment_value),
 #       (else_try),
 #         (assign, ":dead_agent_equipment_value", 0),
 #       (try_end),
@@ -385,29 +385,29 @@ scripts = [
 #         (eq, ":player_team", ":dead_agent_team"),
 #         (val_add, ":dead_agent_team_human_players_count", 1),
 #       (try_end),
-#         
+#
 #       (try_for_range, ":player_no", 0, ":num_players"),
 #         (player_is_active, ":player_no"),
-#          
-#         (try_begin), 
+#
+#         (try_begin),
 #           (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle),
 #           (eq, "$g_multiplayer_game_type", multiplayer_game_type_destroy),
-#           (assign, ":one_spawn_per_round_game_type", 1),            
+#           (assign, ":one_spawn_per_round_game_type", 1),
 #         (else_try),
 #           (assign, ":one_spawn_per_round_game_type", 0),
 #         (try_end),
-#         
+#
 #         (this_or_next|eq, ":one_spawn_per_round_game_type", 0),
 #         (this_or_next|player_slot_eq, ":player_no", slot_player_spawned_this_round, 0),
 #         (player_slot_eq, ":player_no", slot_player_spawned_this_round, 1),
-#         
+#
 #         (player_get_agent_id, ":agent_no", ":player_no"),
 #         (try_begin),
-#           (eq, ":agent_no", ":dead_agent_no"), #if this agent is dead agent then get share from total loot. (20% of total equipment value)                 
+#           (eq, ":agent_no", ":dead_agent_no"), #if this agent is dead agent then get share from total loot. (20% of total equipment value)
 #           (player_get_gold, ":player_gold", ":player_no"),
 #
 #           (assign, ":dead_agent_player_id", ":player_no"),
-#          
+#
 #           #dead agent loot share (32%-48%-64%, norm : 48%)
 #           (store_mul, ":share_of_dead_agent", ":dead_agent_equipment_value", multi_dead_agent_loot_percentage_share),
 #           (val_div, ":share_of_dead_agent", 100),
@@ -421,9 +421,9 @@ scripts = [
 #             (eq, "$g_multiplayer_game_type", multiplayer_game_type_headquarters), #(4/3x) share if current mod is headquarters
 #             (val_mul, ":share_of_dead_agent", 4),
 #             (val_div, ":share_of_dead_agent", 3),
-#             (val_add, ":player_gold", ":share_of_dead_agent"), 
+#             (val_add, ":player_gold", ":share_of_dead_agent"),
 #           (else_try),
-#             (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle), #(2/3x) share if current mod is battle 
+#             (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle), #(2/3x) share if current mod is battle
 #             (eq, "$g_multiplayer_game_type", multiplayer_game_type_destroy), #(2/3x) share if current mod is fight and destroy
 #             (val_mul, ":share_of_dead_agent", 2),
 #             (val_div, ":share_of_dead_agent", 3),
@@ -434,7 +434,7 @@ scripts = [
 #           (player_set_gold, ":player_no", ":player_gold", multi_max_gold_that_can_be_stored),
 #         (else_try),
 #           (eq, ":agent_no", ":killer_agent_no"), #if this agent is killer agent then get share from total loot. (10% of total equipment value)
-#           (player_get_gold, ":player_gold", ":player_no"),           
+#           (player_get_gold, ":player_gold", ":player_no"),
 #
 #           #killer agent standart money (100-150-200, norm : 150)
 #           (assign, ":killer_agent_standard_money_addition", multi_killer_agent_standard_money_add),
@@ -448,9 +448,9 @@ scripts = [
 #             (eq, "$g_multiplayer_game_type", multiplayer_game_type_headquarters), #(4/3x) share if current mod is headquarters
 #             (val_mul, ":killer_agent_standard_money_addition", 4),
 #             (val_div, ":killer_agent_standard_money_addition", 3),
-#             (val_add, ":player_gold", ":killer_agent_standard_money_addition"), 
+#             (val_add, ":player_gold", ":killer_agent_standard_money_addition"),
 #           (else_try),
-#             (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle), #(2/3x) share if current mod is battle 
+#             (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle), #(2/3x) share if current mod is battle
 #             (eq, "$g_multiplayer_game_type", multiplayer_game_type_destroy), #(2/3x) share if current mod is fight and destroy
 #             (val_mul, ":killer_agent_standard_money_addition", 2),
 #             (val_div, ":killer_agent_standard_money_addition", 3),
@@ -472,9 +472,9 @@ scripts = [
 #             (eq, "$g_multiplayer_game_type", multiplayer_game_type_headquarters), #(4/3x) share if current mod is headquarters
 #             (val_mul, ":share_of_killer_agent", 4),
 #             (val_div, ":share_of_killer_agent", 3),
-#             (val_add, ":player_gold", ":share_of_killer_agent"), 
+#             (val_add, ":player_gold", ":share_of_killer_agent"),
 #           (else_try),
-#             (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle), #(2/3x) share if current mod is battle 
+#             (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_battle), #(2/3x) share if current mod is battle
 #             (eq, "$g_multiplayer_game_type", multiplayer_game_type_destroy), #(2/3x) share if current mod is fight and destroy
 #             (val_mul, ":share_of_killer_agent", 2),
 #             (val_div, ":share_of_killer_agent", 3),
@@ -497,7 +497,7 @@ scripts = [
 #       (agent_is_human, ":dead_agent_no"), #if dead agent is not horse
 #       (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
 #       (ge, ":dead_agent_player_id", 0),
-#     
+#
 #       (player_get_gold, ":player_gold", ":dead_agent_player_id"),
 #       (try_begin),
 #         (store_mul, ":minimum_gold", "$g_multiplayer_initial_gold_multiplier", 10),
@@ -506,7 +506,7 @@ scripts = [
 #       (try_end),
 #       (player_set_gold, ":dead_agent_player_id", ":player_gold"),
 #     (try_end),
-#     #new money system addition end          
+#     #new money system addition end
      ]),
 
   #script_initialize_all_scene_prop_slots
@@ -538,7 +538,7 @@ scripts = [
    [
      (store_script_param, ":scene_prop_no", 1),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", ":scene_prop_no"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", ":scene_prop_no"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", ":scene_prop_no", ":cur_instance"),
        (try_for_range, ":cur_slot", 0, scene_prop_slots_end),
@@ -546,7 +546,7 @@ scripts = [
        (try_end),
      (try_end),
      ]),
-           
+
 
   #script_use_item
   # INPUT: arg1 = agent_id, arg2 = instance_id
@@ -560,7 +560,7 @@ scripts = [
        (game_in_multiplayer_mode),
        (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
        (eq, ":scene_prop_id", "spr_winch_b"),
-                      
+
        (multiplayer_get_my_player, ":my_player_no"),
 
        (this_or_next|gt, ":my_player_no", 0),
@@ -572,23 +572,23 @@ scripts = [
        (agent_is_active, ":my_agent_id"),
        (agent_get_team, ":my_team_no", ":my_agent_id"),
        (eq, ":my_team_no", 0),
-                             
+
        (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),
        (ge, ":user_id", 0),
        (agent_is_active, ":user_id"),
        (agent_get_player_id, ":user_player", ":user_id"),
        (str_store_player_username, s7, ":user_player"),
-            
+
        (try_begin),
          (eq, ":opened_or_closed", 0),
          (display_message, "@{s7} opened the gate"),
-       (else_try),  
+       (else_try),
          (display_message, "@{s7} closed the gate"),
        (try_end),
-     (try_end),  
+     (try_end),
 
      (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
-     
+
      (try_begin),
        (this_or_next|eq, ":scene_prop_id", "spr_winch_b"),
        (eq, ":scene_prop_id", "spr_winch"),
@@ -613,7 +613,7 @@ scripts = [
 
      (assign, ":smallest_dist", -1),
      (prop_instance_get_position, pos0, ":instance_id"),
-     (scene_prop_get_num_instances, ":num_instances_of_effected_object", ":effected_object"),     
+     (scene_prop_get_num_instances, ":num_instances_of_effected_object", ":effected_object"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_effected_object"),
        (scene_prop_get_instance, ":cur_instance_id", ":effected_object", ":cur_instance"),
        (prop_instance_get_position, pos1, ":cur_instance_id"),
@@ -628,13 +628,13 @@ scripts = [
        (ge, ":instance_id", 0),
        (ge, ":smallest_dist", 0),
 
-       (try_begin),     
+       (try_begin),
          (eq, ":effected_object", "spr_portcullis"),
          (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),
 
          (try_begin),
            (eq, ":opened_or_closed", 0), #open gate
-     
+
            (scene_prop_enable_after_time, ":instance_id", 400), #4 seconds
            (try_begin),
              (this_or_next|multiplayer_is_server),
@@ -652,7 +652,7 @@ scripts = [
              (prop_instance_get_position, pos1, ":instance_id"),
              (prop_instance_rotate_to_position, ":instance_id", pos1, 400, 72000),
            (try_end),
-         (else_try), #close gate     
+         (else_try), #close gate
            (scene_prop_enable_after_time, ":instance_id", 400), #4 seconds
            (try_begin),
              (this_or_next|multiplayer_is_server),
@@ -699,16 +699,16 @@ scripts = [
            (assign, ":animation_time_drop", 230),
            (assign, ":animation_time_elevate", 400),
          (try_end),
-     
+
          (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),
 
          (try_begin),
            (scene_prop_enable_after_time, ":effected_object_instance_id", ":animation_time_elevate"), #3 seconds in average
-           (eq, ":opened_or_closed", 0), #ladder at ground           
+           (eq, ":opened_or_closed", 0), #ladder at ground
            (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),
            (prop_instance_enable_physics, ":effected_object_instance_id", 0),
            (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 300),
-           (scene_prop_set_slot, ":effected_object_instance_id", scene_prop_open_or_close_slot, 1), 
+           (scene_prop_set_slot, ":effected_object_instance_id", scene_prop_open_or_close_slot, 1),
          (else_try), #ladder at wall
            (scene_prop_enable_after_time, ":effected_object_instance_id", ":animation_time_drop"), #1.5 seconds in average
            (prop_instance_get_position, pos0, ":instance_id"),
@@ -738,14 +738,14 @@ scripts = [
        (else_try),
          (this_or_next|eq, ":effected_object", "spr_door_destructible"),
          (this_or_next|eq, ":effected_object", "spr_castle_f_door_b"),
-         (this_or_next|eq, ":scene_prop_id", "spr_castle_e_sally_door_a"),     
-         (this_or_next|eq, ":scene_prop_id", "spr_castle_f_sally_door_a"),     
-         (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),     
-         (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),     
-         (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),     
-         (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),     
+         (this_or_next|eq, ":scene_prop_id", "spr_castle_e_sally_door_a"),
+         (this_or_next|eq, ":scene_prop_id", "spr_castle_f_sally_door_a"),
+         (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),
+         (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),
+         (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),
+         (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),
          (eq, ":scene_prop_id", "spr_castle_f_door_a"),
-     
+
          (assign, ":effected_object_instance_id", ":instance_id"),
          (scene_prop_get_slot, ":opened_or_closed", ":effected_object_instance_id", scene_prop_open_or_close_slot),
 
@@ -759,16 +759,16 @@ scripts = [
            (try_begin),
              (neg|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),
              (neg|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),
-             
+
              (position_rotate_z, pos0, -85),
-           (else_try),  
+           (else_try),
              (position_rotate_z, pos0, 85),
            (try_end),
-           
+
            (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 100),
-          
+
            (scene_prop_set_slot, ":effected_object_instance_id", scene_prop_open_or_close_slot, 1),
-         (else_try),          
+         (else_try),
            (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),
 
            (scene_prop_enable_after_time, ":effected_object_instance_id", 100),
@@ -780,26 +780,26 @@ scripts = [
        (try_end),
      (try_end),
      ]),
-           
+
   #script_determine_team_flags
   # INPUT: none
   # OUTPUT: none
   ("determine_team_flags",
    [
-     (store_script_param, ":team_no", 1),          
-   
+     (store_script_param, ":team_no", 1),
+
        (try_begin),
          (eq, ":team_no", 0),
-     
+
          (team_get_faction, ":team_faction_no", 0),
          (try_begin),
-           (eq, ":team_faction_no", "fac_1"),   
+           (eq, ":team_faction_no", "fac_1"),
            (assign, "$team_1_flag_scene_prop", "spr_headquarters_flag_swadian"),
          (else_try),
            (eq, ":team_faction_no", "fac_2"),
            (assign, "$team_1_flag_scene_prop", "spr_headquarters_flag_vaegir"),
          (else_try),
-           (eq, ":team_faction_no", "fac_3"), 
+           (eq, ":team_faction_no", "fac_3"),
            (assign, "$team_1_flag_scene_prop", "spr_headquarters_flag_khergit"),
          (else_try),
            (eq, ":team_faction_no", "fac_4"),
@@ -813,8 +813,8 @@ scripts = [
          (try_end),
        (else_try),
          (team_get_faction, ":team_faction_no", 1),
-         (try_begin),    
-           (eq, ":team_faction_no", "fac_1"),   
+         (try_begin),
+           (eq, ":team_faction_no", "fac_1"),
            (assign, "$team_2_flag_scene_prop", "spr_headquarters_flag_swadian"),
          (else_try),
            (eq, ":team_faction_no", "fac_2"),
@@ -831,9 +831,9 @@ scripts = [
          (else_try),
            (eq, ":team_faction_no", "fac_6"),
            (assign, "$team_2_flag_scene_prop", "spr_headquarters_flag_sarranid"),
-         (try_end),  
-       
-         (try_begin),       
+         (try_end),
+
+         (try_begin),
            (eq, "$team_1_flag_scene_prop", "$team_2_flag_scene_prop"),
            (assign, "$team_2_flag_scene_prop", "spr_headquarters_flag_rebel"),
          (try_end),
@@ -849,17 +849,17 @@ scripts = [
      (try_begin),
        (scene_prop_get_instance, ":pole_1_id", "spr_headquarters_pole_code_only", 0),
        (prop_instance_get_position, pos0, ":pole_1_id"),
-       (position_move_z, pos0, -2000), 
+       (position_move_z, pos0, -2000),
        (prop_instance_set_position, ":pole_1_id", pos0),
      (try_end),
 
      (try_begin),
        (scene_prop_get_instance, ":pole_2_id", "spr_headquarters_pole_code_only", 1),
        (prop_instance_get_position, pos1, ":pole_2_id"),
-       (position_move_z, pos1, -2000), 
+       (position_move_z, pos1, -2000),
        (prop_instance_set_position, ":pole_2_id", pos1),
      (try_end),
-    
+
      (try_begin),
        (scene_prop_get_instance, ":pole_1_id", "spr_headquarters_pole_code_only", 0),
        (prop_instance_get_position, pos0, ":pole_1_id"),
@@ -914,7 +914,7 @@ scripts = [
        (try_end),
 
        #(scene_prop_get_instance, ":flag_id", "$team_1_flag_scene_prop", ":flag_no"),
-       #(scene_prop_get_visibility, ":visibility", ":flag_id"),       
+       #(scene_prop_get_visibility, ":visibility", ":flag_id"),
        (try_begin),
          (eq, ":visibility", 1),
          (assign, ":shown_flag", 1),
@@ -929,7 +929,7 @@ scripts = [
          (try_end),
 
          #(scene_prop_get_instance, ":flag_id", "$team_2_flag_scene_prop", ":flag_no"),
-         #(scene_prop_get_visibility, ":visibility", ":flag_id"),              
+         #(scene_prop_get_visibility, ":visibility", ":flag_id"),
          (try_begin),
            (eq, ":visibility", 1),
            (assign, ":shown_flag", 2),
@@ -942,13 +942,13 @@ scripts = [
        (scene_prop_get_instance, ":pole_id", "spr_headquarters_pole_code_only", ":flag_no"),
      (try_end),
 
-     (try_begin),       
+     (try_begin),
        (eq, ":shown_flag", ":current_owner"), #situation 1 : (current owner is equal shown flag)
        (try_begin),
          (ge, ":number_of_agents_around_flag_team_1", 1),
-         (ge, ":number_of_agents_around_flag_team_2", 1),         
+         (ge, ":number_of_agents_around_flag_team_2", 1),
          (assign, ":flag_movement", 0), #0:stop
-       (else_try),  
+       (else_try),
          (eq, ":number_of_agents_around_flag_team_1", 0),
          (eq, ":number_of_agents_around_flag_team_2", 0),
          (assign, ":flag_movement", 1), #1:rise (slow)
@@ -972,7 +972,7 @@ scripts = [
          (ge, ":number_of_agents_around_flag_team_1", 1),
          (ge, ":number_of_agents_around_flag_team_2", 1),
          (assign, ":flag_movement", 0), #0:stop
-       (else_try),  
+       (else_try),
          (eq, ":number_of_agents_around_flag_team_1", 0),
          (eq, ":number_of_agents_around_flag_team_2", 0),
          (assign, ":flag_movement", -1), #-1:drop (slow)
@@ -1013,7 +1013,7 @@ scripts = [
        (position_move_z, pos0, multi_headquarters_pole_height),
        (get_distance_between_positions, ":dist_between_flag_and_its_target", pos0, pos1),
        (call_script, "script_calculate_flag_move_time", ":number_of_total_agents_around_flag", ":dist_between_flag_and_its_target"),
-     (else_try),  
+     (else_try),
        (eq, ":flag_movement", -1),
        (prop_instance_get_position, pos1, ":shown_flag_id"),
        (prop_instance_get_position, pos0, ":pole_id"),
@@ -1040,7 +1040,7 @@ scripts = [
 
      (call_script, "script_move_headquarters_flags", ":flag_no", ":number_of_agents_around_flag_team_1", ":number_of_agents_around_flag_team_2"),
   ]),
-  
+
   #script_change_flag_owner
   # INPUT: arg1 = flag_no, arg2 = owner_code
   # OUTPUT: none
@@ -1054,10 +1054,10 @@ scripts = [
        (val_add, ":owner_code", 1),
        (val_mul, ":owner_code", -1),
      (try_end),
-  
+
      (store_div, ":owner_team_no", ":owner_code", 100),
      (store_mod, ":shown_flag_no", ":owner_code", 100),
-  
+
      (store_add, ":cur_flag_slot", multi_data_flag_owner_begin, ":flag_no"),
      (troop_get_slot, ":older_owner_team_no", "trp_multiplayer_data", ":cur_flag_slot"),
 
@@ -1081,27 +1081,27 @@ scripts = [
          (try_end),
          (eq, ":continue", 1),
          (prop_instance_get_position, pos0, ":pole_id"),
-         (position_move_z, pos0, multi_headquarters_distance_to_change_flag),      
+         (position_move_z, pos0, multi_headquarters_distance_to_change_flag),
        (else_try),
          (prop_instance_get_position, pos0, ":pole_id"), #if new owner team is not 0 then flags are at top
          (position_move_z, pos0, multi_headquarters_pole_height),
        (try_end),
-  
+
        (scene_prop_get_instance, ":flag_id", "$team_1_flag_scene_prop", ":flag_no"),
          (prop_instance_stop_animating, ":flag_id"),
        (prop_instance_set_position, ":flag_id", pos0),
-  
+
        (scene_prop_get_instance, ":flag_id", "$team_2_flag_scene_prop", ":flag_no"),
          (prop_instance_stop_animating, ":flag_id"),
        (prop_instance_set_position, ":flag_id", pos0),
-  
+
        (scene_prop_get_instance, ":flag_id", "spr_headquarters_flag_gray_code_only", ":flag_no"),
          (prop_instance_stop_animating, ":flag_id"),
-       (prop_instance_set_position, ":flag_id", pos0),          
+       (prop_instance_set_position, ":flag_id", pos0),
      (try_end),
 
      #setting visibilities of flags
-     (try_begin), 
+     (try_begin),
        (eq, ":shown_flag_no", 0),
        (scene_prop_get_instance, ":flag_id", "$team_1_flag_scene_prop", ":flag_no"),
        (scene_prop_set_visibility, ":flag_id", 0),
@@ -1130,10 +1130,10 @@ scripts = [
      #other
      (store_add, ":cur_flag_players_around_slot", multi_data_flag_players_around_begin, ":flag_no"),
      (troop_get_slot, ":players_around_code", "trp_multiplayer_data", ":cur_flag_players_around_slot"),
- 
+
      (store_div, ":number_of_agents_around_flag_team_1", ":players_around_code", 100),
      (store_mod, ":number_of_agents_around_flag_team_2", ":players_around_code", 100),
-  
+
      (call_script, "script_move_headquarters_flags", ":flag_no", ":number_of_agents_around_flag_team_1", ":number_of_agents_around_flag_team_2"),
    ]),
 
@@ -1310,10 +1310,10 @@ scripts = [
        (scene_prop_get_instance, ":prop_instance_id", "spr_winch_b", ":cur_prop_instance"),
        (scene_prop_slot_eq, ":prop_instance_id", scene_prop_open_or_close_slot, 1),
        (scene_prop_get_instance, ":effected_object_instance_id", "spr_portcullis", ":cur_prop_instance"),
-       (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),      
+       (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),
        (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 1),
      (try_end),
-   ]),  
+   ]),
 
   #script_multiplayer_move_moveable_objects_initial_positions
   # INPUT: none
@@ -1333,12 +1333,12 @@ scripts = [
   ("move_belfries_to_their_first_entry_point",
    [
     (store_script_param, ":belfry_body_scene_prop", 1),
-     
-    (set_fixed_point_multiplier, 100),    
+
+    (set_fixed_point_multiplier, 100),
     (scene_prop_get_num_instances, ":num_belfries", ":belfry_body_scene_prop"),
-    
+
     (try_for_range, ":belfry_no", 0, ":num_belfries"),
-      #belfry 
+      #belfry
       (scene_prop_get_instance, ":belfry_scene_prop_id", ":belfry_body_scene_prop", ":belfry_no"),
       (prop_instance_get_position, pos0, ":belfry_scene_prop_id"),
 
@@ -1352,15 +1352,15 @@ scripts = [
         #belfry platform_a
         (scene_prop_get_instance, ":belfry_platform_a_scene_prop_id", "spr_belfry_b_platform_a", ":belfry_no"),
       (try_end),
-    
+
       #belfry wheel_1
       (store_mul, ":wheel_no", ":belfry_no", 3),
       (try_begin),
         (eq, ":belfry_body_scene_prop", "spr_belfry_b"),
-        (scene_prop_get_num_instances, ":number_of_belfry_a", "spr_belfry_a"),    
+        (scene_prop_get_num_instances, ":number_of_belfry_a", "spr_belfry_a"),
         (store_mul, ":number_of_belfry_a_wheels", ":number_of_belfry_a", 3),
         (val_add, ":wheel_no", ":number_of_belfry_a_wheels"),
-      (try_end),    
+      (try_end),
       (scene_prop_get_instance, ":belfry_wheel_1_scene_prop_id", "spr_belfry_wheel", ":wheel_no"),
       #belfry wheel_2
       (val_add, ":wheel_no", 1),
@@ -1374,7 +1374,7 @@ scripts = [
         (eq, ":belfry_body_scene_prop", "spr_belfry_b"),
         (scene_prop_get_num_instances, ":number_of_belfry_a", "spr_belfry_a"),
         (val_add, ":belfry_first_entry_point_id", ":number_of_belfry_a"),
-      (try_end),    
+      (try_end),
       (val_mul, ":belfry_first_entry_point_id", 10),
       (entry_point_get_position, pos1, ":belfry_first_entry_point_id"),
 
@@ -1383,20 +1383,20 @@ scripts = [
       (init_position, pos9),
       (position_set_y, pos9, -500), #go 5.0 meters back
       (position_set_x, pos9, -300), #go 3.0 meters left
-      (position_transform_position_to_parent, pos10, pos1, pos9), 
+      (position_transform_position_to_parent, pos10, pos1, pos9),
       (position_get_distance_to_terrain, ":height_to_terrain_1", pos10), #learn distance between 5 meters back of entry point(pos10) and ground level at left part of belfry
 
       (init_position, pos9),
       (position_set_y, pos9, -500), #go 5.0 meters back
       (position_set_x, pos9, 300), #go 3.0 meters right
-      (position_transform_position_to_parent, pos10, pos1, pos9), 
+      (position_transform_position_to_parent, pos10, pos1, pos9),
       (position_get_distance_to_terrain, ":height_to_terrain_2", pos10), #learn distance between 5 meters back of entry point(pos10) and ground level at right part of belfry
 
       (store_add, ":height_to_terrain", ":height_to_terrain_1", ":height_to_terrain_2"),
       (val_mul, ":height_to_terrain", 100), #because of fixed point multiplier
 
       (store_div, ":rotate_angle_of_next_entry_point", ":height_to_terrain", 24), #if there is 1 meters of distance (100cm) then next target position will rotate by 2 degrees. #ac sonra
-      (init_position, pos20),    
+      (init_position, pos20),
       (position_rotate_x_floating, pos20, ":rotate_angle_of_next_entry_point"),
       (position_transform_position_to_parent, pos23, pos1, pos20),
 
@@ -1423,9 +1423,9 @@ scripts = [
       (position_get_distance_to_terrain, ":height_to_terrain_at_right", pos10), #learn distance between 3.0 meters right of entry point(pos10) and ground level
       (store_sub, ":height_to_terrain_2", ":height_to_terrain_at_left", ":height_to_terrain_at_right"),
 
-      (store_add, ":height_to_terrain", ":height_to_terrain_1", ":height_to_terrain_2"),    
+      (store_add, ":height_to_terrain", ":height_to_terrain_1", ":height_to_terrain_2"),
       (val_mul, ":height_to_terrain", 100), #100 is because of fixed_point_multiplier
-      (store_div, ":rotate_angle_of_next_entry_point", ":height_to_terrain", 24), #if there is 1 meters of distance (100cm) then next target position will rotate by 25 degrees. 
+      (store_div, ":rotate_angle_of_next_entry_point", ":height_to_terrain", 24), #if there is 1 meters of distance (100cm) then next target position will rotate by 25 degrees.
       (val_mul, ":rotate_angle_of_next_entry_point", -1),
 
       (init_position, pos20),
@@ -1435,10 +1435,10 @@ scripts = [
       (copy_position, pos1, pos22),
       #end of code block
 
-      #belfry 
+      #belfry
       (prop_instance_stop_animating, ":belfry_scene_prop_id"),
       (prop_instance_set_position, ":belfry_scene_prop_id", pos1),
-    
+
       #belfry platforms
       (try_begin),
         (eq, ":belfry_body_scene_prop", "spr_belfry_a"),
@@ -1449,13 +1449,13 @@ scripts = [
         (position_transform_position_to_parent, pos8, pos1, pos7),
         (try_begin),
           (neg|scene_prop_slot_eq, ":belfry_scene_prop_id", scene_prop_belfry_platform_moved, 0),
-     
+
           (init_position, pos20),
           (position_rotate_x, pos20, 90),
           (position_transform_position_to_parent, pos8, pos8, pos20),
         (try_end),
         (prop_instance_stop_animating, ":belfry_platform_a_scene_prop_id"),
-        (prop_instance_set_position, ":belfry_platform_a_scene_prop_id", pos8),    
+        (prop_instance_set_position, ":belfry_platform_a_scene_prop_id", pos8),
         #belfry platform_b
         (prop_instance_get_position, pos6, ":belfry_platform_b_scene_prop_id"),
         (position_transform_position_to_local, pos7, pos0, pos6),
@@ -1469,20 +1469,20 @@ scripts = [
         (position_transform_position_to_parent, pos8, pos1, pos7),
         (try_begin),
           (neg|scene_prop_slot_eq, ":belfry_scene_prop_id", scene_prop_belfry_platform_moved, 0),
-     
+
           (init_position, pos20),
           (position_rotate_x, pos20, 50),
           (position_transform_position_to_parent, pos8, pos8, pos20),
         (try_end),
         (prop_instance_stop_animating, ":belfry_platform_a_scene_prop_id"),
-        (prop_instance_set_position, ":belfry_platform_a_scene_prop_id", pos8),    
+        (prop_instance_set_position, ":belfry_platform_a_scene_prop_id", pos8),
       (try_end),
-    
+
       #belfry wheel_1
       (store_mul, ":wheel_no", ":belfry_no", 3),
       (try_begin),
         (eq, ":belfry_body_scene_prop", "spr_belfry_b"),
-        (scene_prop_get_num_instances, ":number_of_belfry_a", "spr_belfry_a"),    
+        (scene_prop_get_num_instances, ":number_of_belfry_a", "spr_belfry_a"),
         (store_mul, ":number_of_belfry_a_wheels", ":number_of_belfry_a", 3),
         (val_add, ":wheel_no", ":number_of_belfry_a_wheels"),
       (try_end),
@@ -1513,7 +1513,7 @@ scripts = [
    [
      (store_script_param, ":team_no", 1),
      (store_script_param, ":score", 2),
-     
+
      (team_set_score, ":team_no", ":score"),
    ]),
 
@@ -1542,11 +1542,11 @@ scripts = [
        (ge, ":flag_owner_team", 0),
        (team_set_slot, ":flag_owner_team", slot_team_flag_situation, 1), #1-stolen flag
      (try_end),
-        
+
      (agent_set_attached_scene_prop, ":agent_id", ":flag_id"),
      (agent_set_attached_scene_prop_x, ":agent_id", 20),
      (agent_set_attached_scene_prop_z, ":agent_id", 50),
-   ]),  
+   ]),
 
   #script_set_team_flag_situation
   # INPUT: arg1 = team_no, arg2 = score
@@ -1589,7 +1589,7 @@ scripts = [
      (store_div, "$g_battle_waiting_seconds", multiplayer_battle_formula_value_b, ":sqrt_num_living_players"),
      (store_mission_timer_a, "$g_death_mode_part_1_start_time"),
    ]),
-  
+
   #script_calculate_number_of_targets_destroyed
   # INPUT: none
   # OUTPUT: none
@@ -1605,9 +1605,9 @@ scripts = [
        (get_sq_distance_between_positions_in_meters, ":dist", pos0, pos1),
        (gt, ":dist", 2), #this can be 0 or 1 too.
        (val_add, "$g_number_of_targets_destroyed", 1),
-     (try_end),    
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_trebuchet_destructible"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_trebuchet_destructible"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_trebuchet_destructible", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1615,7 +1615,7 @@ scripts = [
        (get_sq_distance_between_positions_in_meters, ":dist", pos0, pos1),
        (gt, ":dist", 2), #this can be 0 or 1 too.
        (val_add, "$g_number_of_targets_destroyed", 1),
-     (try_end),    
+     (try_end),
      ]),
 
   #script_initialize_objects
@@ -1645,26 +1645,26 @@ scripts = [
      (val_sub, ":number_of_players", 100),
      (val_max, ":number_of_players", 0),
      (store_mul, ":effect_of_number_of_players", ":number_of_players", 2),
-     (store_add, ":health_catapult", multi_minimum_target_health, ":effect_of_number_of_players"),     
-     (store_mul, ":health_trebuchet", ":health_catapult", 15), #trebuchet's health is 1.5x of catapult's     
+     (store_add, ":health_catapult", multi_minimum_target_health, ":effect_of_number_of_players"),
+     (store_mul, ":health_trebuchet", ":health_catapult", 15), #trebuchet's health is 1.5x of catapult's
      (val_div, ":health_trebuchet", 10),
-     (store_mul, ":health_sally_door", ":health_catapult", 18), #sally door's health is 1.8x of catapult's     
+     (store_mul, ":health_sally_door", ":health_catapult", 18), #sally door's health is 1.8x of catapult's
      (val_div, ":health_sally_door", 10),
      (store_mul, ":health_sally_door_double", ":health_sally_door", 2),
 
      (assign, "$g_number_of_targets_destroyed", 0),
-     
+
      (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_catapult_destructible"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
-       (scene_prop_get_instance, ":cur_instance_id", "spr_catapult_destructible", ":cur_instance"),     
+       (scene_prop_get_instance, ":cur_instance_id", "spr_catapult_destructible", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
        (prop_instance_stop_animating, ":cur_instance_id"),
        (prop_instance_set_position, ":cur_instance_id", pos0),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_catapult"),
-     (try_end),    
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_trebuchet_destructible"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_trebuchet_destructible"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_trebuchet_destructible", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1674,7 +1674,7 @@ scripts = [
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_trebuchet"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_e_sally_door_a"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_e_sally_door_a"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_e_sally_door_a", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1683,8 +1683,8 @@ scripts = [
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
      (try_end),
-     
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_sally_door_a"),     
+
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_sally_door_a"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_f_sally_door_a", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1694,7 +1694,7 @@ scripts = [
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_left"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_left"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_earth_sally_gate_left", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1704,7 +1704,7 @@ scripts = [
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_double"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_right"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_right"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_earth_sally_gate_right", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1714,7 +1714,7 @@ scripts = [
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_double"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_left"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_left"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_viking_keep_destroy_sally_door_left", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1722,9 +1722,9 @@ scripts = [
        (prop_instance_set_position, ":cur_instance_id", pos0),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
-     (try_end),     
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_right"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_right"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_viking_keep_destroy_sally_door_right", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1732,11 +1732,11 @@ scripts = [
        (prop_instance_set_position, ":cur_instance_id", pos0),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
-     (try_end),     
+     (try_end),
 
      (store_div, ":health_sally_door_div_3", ":health_sally_door", 3),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_a"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_a"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_f_door_a", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1744,9 +1744,9 @@ scripts = [
        (prop_instance_set_position, ":cur_instance_id", pos0),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_div_3"),
-     (try_end),     
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_b"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_b"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_f_door_b", ":cur_instance"),
        (prop_instance_get_starting_position, pos0, ":cur_instance_id"),
@@ -1754,9 +1754,9 @@ scripts = [
        (prop_instance_set_position, ":cur_instance_id", pos0),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_div_3"),
-     (try_end),     
+     (try_end),
      ]),
-  
+
   #script_initialize_objects_clients
   # INPUT: none
   # OUTPUT: none
@@ -1784,7 +1784,7 @@ scripts = [
      (val_sub, ":number_of_players", 100),
      (val_max, ":number_of_players", 0),
      (store_mul, ":effect_of_number_of_players", ":number_of_players", 2),
-     (store_add, ":health_catapult", multi_minimum_target_health, ":effect_of_number_of_players"),     
+     (store_add, ":health_catapult", multi_minimum_target_health, ":effect_of_number_of_players"),
      (store_mul, ":health_trebuchet", ":health_catapult", 15), #trebuchet's health is 1.5x of catapult's
      (val_div, ":health_trebuchet", 10),
      (store_mul, ":health_sally_door", ":health_catapult", 18), #trebuchet's health is 1.8x of trebuchet's
@@ -1792,78 +1792,78 @@ scripts = [
      (store_mul, ":health_sally_door_double", ":health_sally_door", 2),
 
      (assign, "$g_number_of_targets_destroyed", 0),
-     
+
      (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_catapult_destructible"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
-       (scene_prop_get_instance, ":cur_instance_id", "spr_catapult_destructible", ":cur_instance"),     
+       (scene_prop_get_instance, ":cur_instance_id", "spr_catapult_destructible", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_catapult"),
-     (try_end),    
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_trebuchet_destructible"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_trebuchet_destructible"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_trebuchet_destructible", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_trebuchet"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_e_sally_door_a"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_e_sally_door_a"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_e_sally_door_a", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
      (try_end),
-     
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_sally_door_a"),     
+
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_sally_door_a"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_f_sally_door_a", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_left"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_left"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_earth_sally_gate_left", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_double"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_right"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_earth_sally_gate_right"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_earth_sally_gate_right", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_double"),
      (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_left"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_left"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_viking_keep_destroy_sally_door_left", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
-     (try_end),             
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_right"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_viking_keep_destroy_sally_door_right"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_viking_keep_destroy_sally_door_right", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door"),
-     (try_end),             
+     (try_end),
 
      (store_div, ":health_sally_door_div_3", ":health_sally_door", 3),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_a"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_a"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_f_door_a", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_div_3"),
-     (try_end),     
+     (try_end),
 
-     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_b"),     
+     (scene_prop_get_num_instances, ":num_instances_of_scene_prop", "spr_castle_f_door_b"),
      (try_for_range, ":cur_instance", 0, ":num_instances_of_scene_prop"),
        (scene_prop_get_instance, ":cur_instance_id", "spr_castle_f_door_b", ":cur_instance"),
        (prop_instance_enable_physics, ":cur_instance_id", 1),
        (scene_prop_set_hit_points, ":cur_instance_id", ":health_sally_door_div_3"),
-     (try_end),     
+     (try_end),
      ]),
 
   #script_show_multiplayer_message
@@ -1880,16 +1880,16 @@ scripts = [
       (eq, ":multiplayer_message_type", multiplayer_message_type_round_result_in_battle_mode),
       (assign, "$g_multiplayer_message_value_1", ":value"),
       (start_presentation, "prsnt_multiplayer_message_1"),
-      
+
       (try_begin), #end of round in clients
         (neg|multiplayer_is_server),
         (assign, "$g_battle_death_mode_started", 0),
-      (try_end),  
+      (try_end),
     (else_try),
       (eq, ":multiplayer_message_type", multiplayer_message_type_auto_team_balance_done),
       (assign, "$g_multiplayer_message_value_1", ":value"),
       (start_presentation, "prsnt_multiplayer_message_2"),
-      (assign, "$g_team_balance_next_round", 0), 
+      (assign, "$g_team_balance_next_round", 0),
     (else_try),
       (eq, ":multiplayer_message_type", multiplayer_message_type_auto_team_balance_next),
       (assign, "$g_team_balance_next_round", 1),
@@ -1903,7 +1903,7 @@ scripts = [
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try),
       (eq, ":multiplayer_message_type", multiplayer_message_type_flag_returned_home),
-      (assign, "$g_multiplayer_message_value_1", ":value"),    
+      (assign, "$g_multiplayer_message_value_1", ":value"),
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try),
       (eq, ":multiplayer_message_type", multiplayer_message_type_capture_the_flag_stole),
@@ -1914,7 +1914,7 @@ scripts = [
       (assign, "$g_multiplayer_message_value_3", ":value"),
       (start_presentation, "prsnt_multiplayer_message_3"),
     (else_try),
-      (eq, ":multiplayer_message_type", multiplayer_message_type_flag_neutralized),      
+      (eq, ":multiplayer_message_type", multiplayer_message_type_flag_neutralized),
       (assign, "$g_multiplayer_message_value_1", ":value"),
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try),
@@ -1930,14 +1930,14 @@ scripts = [
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try),
       (eq, ":multiplayer_message_type", multiplayer_message_type_target_destroyed),
-    
+
       (try_begin), #destroy score (condition : a target destroyed)
         (eq, "$g_defender_team", 0),
         (assign, ":attacker_team_no", 1),
       (else_try),
         (assign, ":attacker_team_no", 0),
       (try_end),
-       
+
       (team_get_score, ":team_score", ":attacker_team_no"),
       (val_add, ":team_score", 1),
       (call_script, "script_team_set_score", ":attacker_team_no", ":team_score"), #destroy score end
@@ -1945,7 +1945,7 @@ scripts = [
       (assign, "$g_multiplayer_message_value_1", ":value"),
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try),
-      (eq, ":multiplayer_message_type", multiplayer_message_type_defenders_saved_n_targets),      
+      (eq, ":multiplayer_message_type", multiplayer_message_type_defenders_saved_n_targets),
       (assign, "$g_multiplayer_message_value_1", ":value"),
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try),
@@ -2002,11 +2002,11 @@ scripts = [
       (assign, "$g_multiplayer_message_value_1", -1),
       (assign, "$g_multiplayer_message_type", multiplayer_message_type_round_draw),
       (start_presentation, "prsnt_multiplayer_message_1"),
-    (else_try), 
+    (else_try),
       (eq, ":value", 0), #defender wins
       (assign, "$g_round_ended", 1),
       (store_mission_timer_a, "$g_round_finish_time"),
-        
+
       (team_get_faction, ":faction_of_winner_team", 0),
       (team_get_score, ":team_1_score", 0),
       (val_add, ":team_1_score", 1),
@@ -2017,11 +2017,11 @@ scripts = [
       (assign, "$g_multiplayer_message_value_1", ":value"),
       (assign, "$g_multiplayer_message_type", multiplayer_message_type_round_result_in_battle_mode),
       (start_presentation, "prsnt_multiplayer_message_1"),
-    (else_try), 
+    (else_try),
       (eq, ":value", 1), #attacker wins
       (assign, "$g_round_ended", 1),
       (store_mission_timer_a, "$g_round_finish_time"),
-  
+
       (team_get_faction, ":faction_of_winner_team", 1),
       (team_get_score, ":team_2_score", 1),
       (val_add, ":team_2_score", 1),
@@ -2033,7 +2033,7 @@ scripts = [
       (assign, "$g_multiplayer_message_type", multiplayer_message_type_round_result_in_battle_mode),
       (start_presentation, "prsnt_multiplayer_message_1"),
     (try_end),
-    ]),   
+    ]),
 
   #script_find_most_suitable_bot_to_control
   # INPUT: arg1 = value
@@ -2078,7 +2078,7 @@ scripts = [
         (try_for_agents, ":cur_agent_2"),
           (agent_is_alive, ":cur_agent_2"),
           (agent_is_human, ":cur_agent_2"),
-          (neq, ":cur_agent", ":cur_agent_2"),      
+          (neq, ":cur_agent", ":cur_agent_2"),
           (agent_get_team ,":cur_team_2", ":cur_agent_2"),
           (try_begin),
             (neq, ":cur_team_2", ":player_team"),
@@ -2217,10 +2217,10 @@ scripts = [
 #            (try_begin),
 #              (neq, ":value", multi_team_spectator),
 #              (neq, ":value", multi_team_unassigned),
-#      
-#              (store_mission_timer_a, ":player_last_team_select_time"),         
+#
+#              (store_mission_timer_a, ":player_last_team_select_time"),
 #              (player_set_slot, ":player_no", slot_player_last_team_select_time, ":player_last_team_select_time"),
-#      
+#
 #              (multiplayer_send_message_to_player, ":player_no", multiplayer_event_return_confirmation),
 #            (try_end),
 #          (else_try),
@@ -2283,7 +2283,7 @@ scripts = [
           (player_is_admin, ":player_no"),
           (is_between, ":value", 2, 65),
           #condition checks are done
-          (server_set_max_num_players, ":value"),      
+          (server_set_max_num_players, ":value"),
         (try_end),
       (else_try),
         (eq, ":event_type", multiplayer_event_admin_set_num_bots_in_team),
@@ -2301,11 +2301,11 @@ scripts = [
           (else_try),
             (assign, "$g_multiplayer_num_bots_team_2", ":value_2"),
           (try_end),
-          (get_max_players, ":num_players"),                               
+          (get_max_players, ":num_players"),
           (try_for_range, ":cur_player", 1, ":num_players"),
             (player_is_active, ":cur_player"),
             (multiplayer_send_2_int_to_player, ":cur_player", multiplayer_event_return_num_bots_in_team, ":value", ":value_2"),
-          (try_end),            
+          (try_end),
         (try_end),
       (else_try),
         (eq, ":event_type", multiplayer_event_admin_set_anti_cheat),
@@ -2393,13 +2393,13 @@ scripts = [
         #validity check
         (player_is_admin, ":player_no"),
         (is_between, ":value", 0, 6),
-        #condition checks are done       
+        #condition checks are done
         (assign, "$g_multiplayer_number_of_respawn_count", ":value"),
         (get_max_players, ":num_players"),
         (try_for_range, ":cur_player", 1, ":num_players"),
           (player_is_active, ":cur_player"),
           (multiplayer_send_int_to_player, ":cur_player", multiplayer_event_return_respawn_count, ":value"),
-        (try_end),                  
+        (try_end),
       (else_try),
         (eq, ":event_type", multiplayer_event_admin_set_add_to_servers_list),
         (store_script_param, ":value", 3),
@@ -2410,7 +2410,7 @@ scripts = [
           (server_set_add_to_game_servers_list, ":value"),
         (try_end),
       (else_try),
-        (eq, ":event_type", multiplayer_event_admin_set_respawn_period), 
+        (eq, ":event_type", multiplayer_event_admin_set_respawn_period),
         (store_script_param, ":value", 3),
         (try_begin),
           #validity check
@@ -2422,7 +2422,7 @@ scripts = [
           (try_for_range, ":cur_player", 1, ":num_players"),
             (player_is_active, ":cur_player"),
             (multiplayer_send_int_to_player, ":cur_player", multiplayer_event_return_respawn_period, ":value"),
-          (try_end),            
+          (try_end),
         (try_end),
       (else_try),
         (eq, ":event_type", multiplayer_event_admin_set_game_max_minutes),
@@ -2447,7 +2447,7 @@ scripts = [
           (try_for_range, ":cur_player", 1, ":num_players"),
             (player_is_active, ":cur_player"),
             (multiplayer_send_int_to_player, ":cur_player", multiplayer_event_return_round_max_seconds, ":value"),
-          (try_end),            
+          (try_end),
         (try_end),
       (else_try),
         (eq, ":event_type", multiplayer_event_admin_set_player_respawn_as_bot),
@@ -2462,7 +2462,7 @@ scripts = [
           (try_for_range, ":cur_player", 1, ":num_players"),
             (player_is_active, ":cur_player"),
             (multiplayer_send_int_to_player, ":cur_player", multiplayer_event_return_player_respawn_as_bot, ":value"),
-          (try_end),            
+          (try_end),
         (try_end),
       (else_try),
         (eq, ":event_type", multiplayer_event_admin_set_game_max_points),
@@ -2976,7 +2976,7 @@ scripts = [
         #CLIENT EVENTS#
         ###############
         (neg|multiplayer_is_dedicated_server),
-        (try_begin),      
+        (try_begin),
           (eq, ":event_type", multiplayer_event_return_renaming_server_allowed),
           (store_script_param, ":value", 3),
           (assign, "$g_multiplayer_renaming_server_allowed", ":value"),
@@ -3083,7 +3083,7 @@ scripts = [
         (else_try),
           (eq, ":event_type", multiplayer_event_return_respawn_count),
           (store_script_param, ":value", 3),
-          (assign, "$g_multiplayer_number_of_respawn_count", ":value"),          
+          (assign, "$g_multiplayer_number_of_respawn_count", ":value"),
         (else_try),
           (eq, ":event_type", multiplayer_event_return_server_name),
           (server_set_name, s0),
@@ -3162,13 +3162,13 @@ scripts = [
           (call_script, "script_show_multiplayer_message", ":value", ":value_2"),
         (else_try),
           (eq, ":event_type", multiplayer_event_draw_this_round),
-          (store_script_param, ":value", 3),          
+          (store_script_param, ":value", 3),
           (call_script, "script_draw_this_round", ":value"),
         (else_try),
           (eq, ":event_type", multiplayer_event_set_attached_scene_prop),
           (store_script_param, ":value", 3),
           (store_script_param, ":value_2", 4),
-          (call_script, "script_set_attached_scene_prop", ":value", ":value_2"),  
+          (call_script, "script_set_attached_scene_prop", ":value", ":value_2"),
         (else_try),
           (eq, ":event_type", multiplayer_event_set_team_flag_situation),
           (store_script_param, ":value", 3),
@@ -3180,7 +3180,7 @@ scripts = [
           (store_script_param, ":value_2", 4),
           (call_script, "script_team_set_score", ":value", ":value_2"),
         (else_try),
-          (eq, ":event_type", multiplayer_event_set_player_score_kill_death), 
+          (eq, ":event_type", multiplayer_event_set_player_score_kill_death),
           (store_script_param, ":value", 3),
           (store_script_param, ":value_2", 4),
           (store_script_param, ":value_3", 5),
@@ -3230,8 +3230,8 @@ scripts = [
           (call_script, "script_use_item", ":value", ":value_2"),
         (else_try),
           (eq, ":event_type", multiplayer_event_set_scene_prop_open_or_close),
-          (store_script_param, ":instance_id", 3),       
-        
+          (store_script_param, ":instance_id", 3),
+
           (scene_prop_set_slot, ":instance_id", scene_prop_open_or_close_slot, 1),
 
           (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
@@ -3241,11 +3241,11 @@ scripts = [
             (assign, ":effected_object", "spr_portcullis"),
           (else_try),
             (this_or_next|eq, ":scene_prop_id", "spr_castle_e_sally_door_a"),
-            (this_or_next|eq, ":scene_prop_id", "spr_castle_f_sally_door_a"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),                             
-            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),                             
+            (this_or_next|eq, ":scene_prop_id", "spr_castle_f_sally_door_a"),
+            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),
+            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),
+            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),
+            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),
             (this_or_next|eq, ":scene_prop_id", "spr_castle_f_door_a"),
             (this_or_next|eq, ":scene_prop_id", "spr_door_destructible"),
             (this_or_next|eq, ":scene_prop_id", "spr_castle_f_door_b"),
@@ -3262,7 +3262,7 @@ scripts = [
 
             (assign, ":smallest_dist", -1),
             (prop_instance_get_position, pos0, ":instance_id"),
-            (scene_prop_get_num_instances, ":num_instances_of_effected_object", ":effected_object"),     
+            (scene_prop_get_num_instances, ":num_instances_of_effected_object", ":effected_object"),
             (try_for_range, ":cur_instance", 0, ":num_instances_of_effected_object"),
               (scene_prop_get_instance, ":cur_instance_id", ":effected_object", ":cur_instance"),
               (prop_instance_get_position, pos1, ":cur_instance_id"),
@@ -3277,20 +3277,20 @@ scripts = [
             (prop_instance_is_animating, ":is_animating", ":effected_object_instance_id"),
             (eq, ":is_animating", 0),
 
-            (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),      
+            (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),
             (position_move_z, pos0, 375),
             (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 1),
           (else_try),
             (this_or_next|eq, ":scene_prop_id", "spr_castle_e_sally_door_a"),
-            (this_or_next|eq, ":scene_prop_id", "spr_castle_f_sally_door_a"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),     
-            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),     
+            (this_or_next|eq, ":scene_prop_id", "spr_castle_f_sally_door_a"),
+            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),
+            (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),
+            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),
+            (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),
             (this_or_next|eq, ":scene_prop_id", "spr_castle_f_door_a"),
             (this_or_next|eq, ":scene_prop_id", "spr_door_destructible"),
             (eq, ":scene_prop_id", "spr_castle_f_door_b"),
-            (assign, ":effected_object_instance_id", ":instance_id"),  
+            (assign, ":effected_object_instance_id", ":instance_id"),
             (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),
             (position_rotate_z, pos0, -80),
             (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 1),
@@ -3298,8 +3298,8 @@ scripts = [
             (assign, ":effected_object_instance_id", ":instance_id"),
             (prop_instance_is_animating, ":is_animating", ":effected_object_instance_id"),
             (eq, ":is_animating", 0),
-            (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),      
-            (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 1),          
+            (prop_instance_get_starting_position, pos0, ":effected_object_instance_id"),
+            (prop_instance_animate_to_position, ":effected_object_instance_id", pos0, 1),
           (try_end),
         (else_try),
           (eq, ":event_type", multiplayer_event_set_round_start_time),
@@ -3317,7 +3317,7 @@ scripts = [
             (call_script, "script_initialize_scene_prop_slots", "spr_siege_ladder_move_10m"),
             (call_script, "script_initialize_scene_prop_slots", "spr_siege_ladder_move_12m"),
             (call_script, "script_initialize_scene_prop_slots", "spr_siege_ladder_move_14m"),
-            (call_script, "script_initialize_scene_prop_slots", "spr_winch_b"),         
+            (call_script, "script_initialize_scene_prop_slots", "spr_winch_b"),
           (try_end),
 #        (else_try),
 #          (eq, ":event_type", multiplayer_event_force_start_team_selection),
@@ -3326,7 +3326,7 @@ scripts = [
 #            (assign, "$g_close_equipment_selection", 1),
 #          (try_end),
 #          (start_presentation, "prsnt_multiplayer_troop_select"),
-        (else_try),     
+        (else_try),
           (eq, ":event_type", multiplayer_event_start_death_mode),
           (assign, "$g_battle_death_mode_started", 2),
           (start_presentation, "prsnt_multiplayer_flag_projection_display_bt"),
@@ -3338,7 +3338,7 @@ scripts = [
             (gt, "$g_my_spawn_count", 0),
             (store_add, "$g_my_spawn_count", "$g_my_spawn_count", ":value"),
           (else_try),
-            (assign, "$g_my_spawn_count", ":value"),      
+            (assign, "$g_my_spawn_count", ":value"),
           (try_end),
         (else_try),
           (eq, ":event_type", multiplayer_event_show_duel_request),
@@ -3446,7 +3446,7 @@ scripts = [
          (eq, "$g_multiplayer_poll_to_show", 4), #change number of bots
          (assign, "$g_multiplayer_num_bots_team_1", "$g_multiplayer_poll_value_to_show"),
          (assign, "$g_multiplayer_num_bots_team_2", "$g_multiplayer_poll_value_2_to_show"),
-         (get_max_players, ":num_players"),                               
+         (get_max_players, ":num_players"),
          (try_for_range, ":cur_player", 1, ":num_players"),
            (player_is_active, ":cur_player"),
            (multiplayer_send_2_int_to_player, ":cur_player", multiplayer_event_return_num_bots_in_team, 1, "$g_multiplayer_num_bots_team_1"),
@@ -3459,7 +3459,7 @@ scripts = [
      (get_max_players, ":num_players"),
      #for only server itself-----------------------------------------------------------------------------------------------
      (call_script, "script_show_multiplayer_message", multiplayer_message_type_poll_result, ":result"), #0 is useless here
-     #for only server itself-----------------------------------------------------------------------------------------------     
+     #for only server itself-----------------------------------------------------------------------------------------------
      (try_for_range, ":cur_player", 1, ":num_players"),
        (player_is_active, ":cur_player"),
        (multiplayer_send_2_int_to_player, ":cur_player", multiplayer_event_show_multiplayer_message, multiplayer_message_type_poll_result, ":result"),
@@ -3572,7 +3572,7 @@ scripts = [
        (set_trigger_result, 1),
      (else_try),
        (eq, ":option_index", 9),
-       (server_get_control_block_dir, reg0),       
+       (server_get_control_block_dir, reg0),
        (set_trigger_result, 1),
      (else_try),
        (eq, ":option_index", 10),
@@ -3622,7 +3622,7 @@ scripts = [
        (eq, ":option_index", 21),
        (assign, reg0, "$g_multiplayer_round_earnings_multiplier"),
        (set_trigger_result, 1),
-     (try_end),     
+     (try_end),
      ]),
 
   # script_game_multiplayer_server_option_for_mission_template_to_string
@@ -3808,10 +3808,10 @@ scripts = [
   ("find_number_of_agents_constant",
    [
      (assign, ":num_dead_or_alive_agents", 0),
-     
+
      (try_for_agents, ":cur_agent"),
        (agent_is_human, ":cur_agent"),
-       (val_add, ":num_dead_or_alive_agents", 1),     
+       (val_add, ":num_dead_or_alive_agents", 1),
      (try_end),
 
      (try_begin),
@@ -3872,7 +3872,7 @@ scripts = [
        (display_message, "str_a_duel_request_is_sent_to_s0"),
      (try_end),
      ]),
-	 
+
   # script_game_get_multiplayer_game_type_enum
   # Input: none
   # Output: reg0:first type, reg1:type count
@@ -3884,7 +3884,7 @@ scripts = [
 
   # script_game_multiplayer_get_game_type_mission_template
   # Input: arg1 = game_type
-  # Output: mission_template 
+  # Output: mission_template
   ("game_multiplayer_get_game_type_mission_template",
    [
      (assign, reg0, "mt_conquest"),
@@ -3892,7 +3892,7 @@ scripts = [
 
   # script_multiplayer_get_mission_template_game_type
   # Input: arg1 = mission_template_no
-  # Output: game_type 
+  # Output: game_type
   ("multiplayer_get_mission_template_game_type",
    [
      (assign, reg0, multiplayer_game_type_conquest),
@@ -3901,7 +3901,7 @@ scripts = [
 
   # script_multiplayer_fill_available_factions_combo_button
   # Input: arg1 = overlay_id, arg2 = selected_faction_no, arg3 = opposite_team_selected_faction_no
-  # Output: none 
+  # Output: none
   ("multiplayer_fill_available_factions_combo_button",
    [
      (store_script_param, ":overlay_id", 1),
@@ -3928,11 +3928,11 @@ scripts = [
      (val_sub, ":selected_faction_no", "fac_1"),
      (overlay_set_val, ":overlay_id", ":selected_faction_no"),
      ]),
-  
+
 
   # script_multiplayer_get_troop_class
   # Input: arg1 = troop_no
-  # Output: reg0: troop_class 
+  # Output: reg0: troop_class
   ("multiplayer_get_troop_class",
    [
      (store_script_param_1, ":troop_no"),
@@ -3981,7 +3981,7 @@ scripts = [
        (player_set_slot, ":player_no", ":slot_no", -1),
      (try_end),
      ]),
-  
+
 
   #script_multiplayer_init_player_slots
   # Input: arg1 = player_no
@@ -4017,7 +4017,7 @@ scripts = [
 ##      #belfry wheel_3
 ##      (val_add, ":wheel_no", 1),
 ##      (scene_prop_get_instance, ":belfry_wheel_3_scene_prop_id", "spr_belfry_wheel", ":wheel_no"),
-##      (prop_instance_initialize_rotation_angles, ":belfry_wheel_3_scene_prop_id"),   
+##      (prop_instance_initialize_rotation_angles, ":belfry_wheel_3_scene_prop_id"),
 ##    (try_end),
 ##
 ##    (scene_prop_get_num_instances, ":num_belfries_a", "spr_belfry_a"),
@@ -4035,25 +4035,25 @@ scripts = [
 ##      #belfry wheel_3
 ##      (val_add, ":wheel_no_plus_num_belfries_a", 1),
 ##      (scene_prop_get_instance, ":belfry_wheel_3_scene_prop_id", "spr_belfry_wheel", ":wheel_no_plus_num_belfries_a"),
-##      (prop_instance_initialize_rotation_angles, ":belfry_wheel_3_scene_prop_id"),   
+##      (prop_instance_initialize_rotation_angles, ":belfry_wheel_3_scene_prop_id"),
 ##    (try_end),
 
       (scene_prop_get_num_instances, ":num_wheel", "spr_belfry_wheel"),
       (try_for_range, ":wheel_no", 0, ":num_wheel"),
         (scene_prop_get_instance, ":wheel_id", "spr_belfry_wheel", ":wheel_no"),
-        (prop_instance_initialize_rotation_angles, ":wheel_id"),   
+        (prop_instance_initialize_rotation_angles, ":wheel_id"),
       (try_end),
 
       (scene_prop_get_num_instances, ":num_winch", "spr_winch"),
       (try_for_range, ":winch_no", 0, ":num_winch"),
         (scene_prop_get_instance, ":winch_id", "spr_winch", ":winch_no"),
-        (prop_instance_initialize_rotation_angles, ":winch_id"),   
+        (prop_instance_initialize_rotation_angles, ":winch_id"),
       (try_end),
 
       (scene_prop_get_num_instances, ":num_winch_b", "spr_winch_b"),
       (try_for_range, ":winch_b_no", 0, ":num_winch_b"),
         (scene_prop_get_instance, ":winch_b_id", "spr_winch_b", ":winch_b_no"),
-        (prop_instance_initialize_rotation_angles, ":winch_b_id"),   
+        (prop_instance_initialize_rotation_angles, ":winch_b_id"),
       (try_end),
      ]),
 
@@ -4064,7 +4064,7 @@ scripts = [
    [
      (store_script_param, ":player_no", 1),
      (store_script_param, ":scene_prop_no", 2),
-     
+
      (scene_prop_get_num_instances, ":num_instances", ":scene_prop_no"),
 
      (try_for_range, ":instance_no", 0, ":num_instances"),
@@ -4083,7 +4083,7 @@ scripts = [
   ("multiplayer_send_initial_information",
    [
      (store_script_param, ":player_no", 1),
-          
+
      (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_return_num_bots_in_team, 1, "$g_multiplayer_num_bots_team_1"),
      (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_return_num_bots_in_team, 2, "$g_multiplayer_num_bots_team_2"),
      (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_auto_team_balance_limit, "$g_multiplayer_auto_team_balance_limit"),
@@ -4099,7 +4099,7 @@ scripts = [
      (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_round_max_seconds, "$g_multiplayer_round_max_seconds"),
      (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_game_type, "$g_multiplayer_game_type"),
      (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_player_respawn_as_bot, "$g_multiplayer_player_respawn_as_bot"),
-     
+
      (store_mission_timer_a, ":mission_timer"),
      (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_server_mission_timer_while_player_joined, ":mission_timer"),
 
@@ -4120,8 +4120,8 @@ scripts = [
      (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_castle_f_sally_door_a"),
      (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_earth_sally_gate_left"),
      (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_earth_sally_gate_right"),
-     (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_viking_keep_destroy_sally_door_left"),     
-     (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_viking_keep_destroy_sally_door_right"),     
+     (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_viking_keep_destroy_sally_door_left"),
+     (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_viking_keep_destroy_sally_door_right"),
      (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_castle_f_door_a"),
      (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_door_destructible"),
      (call_script, "script_send_open_close_information_of_object", ":player_no", "spr_castle_f_door_b"),
@@ -4138,7 +4138,7 @@ scripts = [
        (replace_scene_props, "spr_catapult_destructible", "spr_empty"),
        (replace_scene_props, "spr_trebuchet_destructible", "spr_empty"),
      ]),
-  
+
   #script_multiplayer_init_mission_variables
   ("multiplayer_init_mission_variables",
    [
@@ -4178,7 +4178,7 @@ scripts = [
      (try_end),
      #EVERY_BREATH_YOU_TAKE achievement end
      ]),
-  
+
 
   #script_multiplayer_event_agent_killed_or_wounded
   # Input: arg1 = dead_agent_no, arg2 = killer_agent_no
@@ -4187,7 +4187,7 @@ scripts = [
    [
      (store_script_param, ":dead_agent_no", 1),
      (store_script_param, ":killer_agent_no", 2),
-     
+
      (multiplayer_get_my_player, ":my_player_no"),
      (try_begin),
        (is_between, ":my_player_no", 0, multiplayer_max_possible_player_id),
@@ -4312,9 +4312,9 @@ scripts = [
        (is_between, ":my_player_no", 0, multiplayer_max_possible_player_id),
        (player_get_agent_id, ":player_agent", ":my_player_no"),
        (eq, ":dead_agent_no", ":player_agent"),
-     
+
        (assign, ":show_respawn_counter", 0),
-       (try_begin),        
+       (try_begin),
          (eq, "$g_multiplayer_player_respawn_as_bot", 1),
          (player_get_team_no, ":my_player_team", ":my_player_no"),
          (assign, ":is_found", 0),
@@ -4330,17 +4330,17 @@ scripts = [
          (eq, ":is_found", 1),
          (assign, ":show_respawn_counter", 1),
        (try_end),
-       
+
        (try_begin),
          (assign, "$g_show_no_more_respawns_remained", 0),
        (try_end),
 
-       (eq, ":show_respawn_counter", 1),             
+       (eq, ":show_respawn_counter", 1),
 
        (start_presentation, "prsnt_multiplayer_respawn_time_counter"),
      (try_end),
      ]),
-     
+
   #script_multiplayer_get_item_value_for_troop
   # Input: arg1 = item_no, arg2 = troop_no
   # Output: reg0: item_value
@@ -4365,7 +4365,7 @@ scripts = [
 
   #script_multiplayer_get_previous_item_for_item_and_troop
   # Input: arg1 = item_no, arg2 = troop_no
-  # Output: reg0: previous_item_no (-1 if it is the root item, 0 if the item is invalid) 
+  # Output: reg0: previous_item_no (-1 if it is the root item, 0 if the item is invalid)
   ("multiplayer_get_previous_item_for_item_and_troop",
    [
      (store_script_param, ":item_no", 1),
@@ -4515,7 +4515,7 @@ scripts = [
      (try_end),
      (eq, ":default_item", 1),
      ]),
-  
+
   #script_multiplayer_calculate_cur_selected_items_cost
   # Input: arg1 = player_no
   # Output: reg0: total_cost
@@ -4534,7 +4534,7 @@ scripts = [
        (assign, ":begin_cond", slot_player_selected_item_indices_begin),
        (assign, ":end_cond", slot_player_selected_item_indices_end),
      (try_end),
-     
+
      (try_for_range, ":i_item", ":begin_cond", ":end_cond"),
        (player_get_slot, ":item_id", ":player_no", ":i_item"),
        (ge, ":item_id", 0), #might be -1 for horses etc.
@@ -4639,7 +4639,7 @@ scripts = [
      (try_end),
 
      (assign, ":num_available_items", 0),
-     
+
      (try_for_range, ":item_no", all_items_begin, all_items_end),
        (item_get_slot, ":item_class", ":item_no", slot_item_multiplayer_item_class),
        (is_between, ":item_class", ":item_classes_begin", ":item_classes_end"),
@@ -4743,7 +4743,7 @@ scripts = [
       (assign, reg0, ":num_maps"),
       ]),
 
-  
+
   # script_multiplayer_count_players_bots
   # Input: none
   # Output: none
@@ -4791,7 +4791,7 @@ scripts = [
       (get_max_players, ":num_players"),
       (try_for_range, ":cur_player", 0, ":num_players"),
         (assign, ":continue", 0),
-        (player_is_active, ":cur_player"),          
+        (player_is_active, ":cur_player"),
         (try_begin),
           (eq, ":look_only_actives", 0),
           (assign, ":continue", 1),
@@ -4804,13 +4804,13 @@ scripts = [
         (try_end),
 
         (eq, ":continue", 1),
-      
+
         (player_get_team_no, ":player_team", ":cur_player"),
         (eq, ":team_no", ":player_team"),
         (val_add, ":team_player_count", 1),
       (try_end),
       (assign, ":result_leader", -1),
-      (try_begin),      
+      (try_begin),
         (gt, ":team_player_count", 0),
         (assign, ":total_bot_count", "$g_multiplayer_num_bots_team_1"),
         (try_begin),
@@ -4823,7 +4823,7 @@ scripts = [
           (lt, ":check_remainder", ":total_bot_count"),
           (val_add, ":num_bots_for_each_player", 1),
         (try_end),
-      
+
         (assign, ":total_bot_req", 0),
         (try_for_range, ":cur_player", 0, ":num_players"),
           (player_is_active, ":cur_player"),
@@ -4831,7 +4831,7 @@ scripts = [
           (player_get_agent_id, ":cur_agent", ":cur_player"),
           (ge, ":cur_agent", 0),
           (agent_is_alive, ":cur_agent"),
-      
+
           (player_get_team_no, ":player_team", ":cur_player"),
           (eq, ":team_no", ":player_team"),
           (assign, ":ai_wanted", 0),
@@ -4848,7 +4848,7 @@ scripts = [
           (val_sub, ":total_bot_req", ":player_bot_count"),
         (try_end),
         (gt, ":total_bot_req", 0),
-      
+
         (store_random_in_range, ":random_bot", 0, ":total_bot_req"),
         (try_for_range, ":cur_player", 0, ":num_players"),
           (player_is_active, ":cur_player"),
@@ -4924,7 +4924,7 @@ scripts = [
       (try_end),
       (assign, reg0, ":selected_troop"),
       (assign, reg1, ":leader_player"),
-      ]),	
+      ]),
 
   # script_multiplayer_change_leader_of_bot
   # Input: arg1 = agent_no
@@ -4937,22 +4937,22 @@ scripts = [
       (assign, ":leader_player", reg0),
       (agent_set_group, ":agent_no", ":leader_player"),
       ]),
-      
+
   ("multiplayer_find_spawn_point",
   [
      (store_script_param, ":team_no", 1),
      (store_script_param, ":examine_all_spawn_points", 2), #0-dm, 1-tdm, 2-cf, 3-hq, 4-sg
      (store_script_param, ":is_horseman", 3), #0:no, 1:yes, -1:do not care
-     
+
      (set_fixed_point_multiplier, 100),
-                   
+
      (assign, ":flags", 0),
-     
+
      (try_begin),
        (eq, ":examine_all_spawn_points", 1),
        (val_or, ":flags", spf_examine_all_spawn_points),
      (try_end),
-     
+
      (try_begin),
        (eq, ":is_horseman", 1),
        (val_or, ":flags", spf_is_horseman),
@@ -4960,7 +4960,7 @@ scripts = [
 
      (multiplayer_find_spawn_point, reg0, ":team_no", ":flags"),
   ]),
-    
+
   # script_multiplayer_find_spawn_point_2
   # Input: arg1 = team_no, arg2 = examine_all_spawn_points, arg3 = is_horseman
   # Output: reg0 = entry_point_no
@@ -4979,13 +4979,13 @@ scripts = [
 
      (assign, ":num_human_agents_plus_one", ":num_human_agents_div_3_plus_one"),
 
-     (try_begin), 
+     (try_begin),
        (le, ":num_human_agents_plus_one", 4),
        (assign, ":random_number_upper_limit", 2), #this is not typo-mistake this should be 2 too, not 1.
-     (else_try), 
+     (else_try),
        (le, ":num_human_agents_plus_one", 8),
        (assign, ":random_number_upper_limit", 2),
-     (else_try), 
+     (else_try),
        (le, ":num_human_agents_plus_one", 16),
        (assign, ":random_number_upper_limit", 3),
      (else_try),
@@ -5009,16 +5009,16 @@ scripts = [
        (eq, ":examine_all_spawn_points", 1),
        (assign, ":random_number_upper_limit", 1),
      (try_end),
-     
+
      (assign, ":first_agent", 0),
-     
+
      (assign, ":multiplier", 0),
-     
+
      (try_begin),
        (try_for_range, ":i_entry_point", 0, multi_num_valid_entry_points),
-         (assign, ":minimum_enemy_distance", 3000), 
-         (assign, ":second_minimum_enemy_distance", 3000), 
-              
+         (assign, ":minimum_enemy_distance", 3000),
+         (assign, ":second_minimum_enemy_distance", 3000),
+
          (assign, ":entry_point_score", 0),
          (store_random_in_range, ":random_value", 0, ":random_number_upper_limit"), #in average it is 5
          (eq, ":random_value", 0),
@@ -5026,7 +5026,7 @@ scripts = [
          (try_for_agents, ":i_agent"),
            (agent_is_alive, ":i_agent"),
            (agent_is_human, ":i_agent"),
-           (agent_get_team, ":agent_team", ":i_agent"),  
+           (agent_get_team, ":agent_team", ":i_agent"),
            (agent_get_position, pos1, ":i_agent"),
            (get_distance_between_positions_in_meters, ":distance", pos0, pos1),
            (val_add, ":num_operations", 1),
@@ -5042,7 +5042,7 @@ scripts = [
                  (assign, ":second_minimum_enemy_distance", ":distance"),
                (try_end),
              (try_end),
-     
+
              (lt, ":distance", 100),
              (try_begin), #do not spawn over or too near to another agent (limit is 2 meters, squared 4 meters)
                (lt, ":distance", 3),
@@ -5050,20 +5050,20 @@ scripts = [
                  (this_or_next|eq, ":examine_all_spawn_points", 0),
                  (this_or_next|lt, ":multiplier", 0), #new added 20.08.08
                  (try_begin),
-                   (lt, ":distance", 1),                 
-                   (assign, ":dist_point", -1000000), #never place 
+                   (lt, ":distance", 1),
+                   (assign, ":dist_point", -1000000), #never place
                  (else_try),
                    (lt, ":distance", 2),
                    (try_begin),
-                     (lt, ":multiplier", 0), 
+                     (lt, ":multiplier", 0),
                      (assign, ":dist_point", -20000),
                    (else_try),
                      (assign, ":dist_point", -2000), #can place, friend and distance is between 1-2 meters
-                   (try_end), 
+                   (try_end),
                  (else_try),
                    (try_begin),
-                     (lt, ":multiplier", 0), 
-                     (assign, ":dist_point", -10000), 
+                     (lt, ":multiplier", 0),
+                     (assign, ":dist_point", -10000),
                    (else_try),
                      (assign, ":dist_point", -1000), #can place, friend and distance is between 2-3 meters
                    (try_end),
@@ -5071,18 +5071,18 @@ scripts = [
                (else_try),
                  #if examinining all spawn points and mod is siege only. This happens in new round start placings.
                  (try_begin),
-                   (lt, ":distance", 1),                 
+                   (lt, ":distance", 1),
                    (assign, ":dist_point", -20000), #very hard to place distance is < 1 meter
                  (else_try),
                    (lt, ":distance", 2),
                    (assign, ":dist_point", -2000),
-                 (else_try),       
+                 (else_try),
                    (assign, ":dist_point", -1000), #can place, distance is between 2-3 meters
-                 (try_end),                 
+                 (try_end),
                (try_end),
-     
-               (val_mul, ":dist_point", ":num_human_agents_div_3_plus_one"),                 
-             
+
+               (val_mul, ":dist_point", ":num_human_agents_div_3_plus_one"),
+
              (try_end),
              (val_add, ":entry_point_score", ":dist_point"),
            (try_end),
@@ -5095,9 +5095,9 @@ scripts = [
            #(assign, ":second_minimum_enemy_dist_score", 0), #close also these with displays
            #(assign, reg2, ":minimum_enemy_distance"), #close also these with displays
            #(assign, reg3, ":second_minimum_enemy_distance"), #close also these with displays
-          
+
            (try_begin), #if minimum enemy dist score is greater than 40(multiplayer_spawn_above_opt_enemy_dist_point) meters then give negative score
-             (lt, ":minimum_enemy_distance", 3000), 
+             (lt, ":minimum_enemy_distance", 3000),
              (try_begin),
                (gt, ":minimum_enemy_distance", multiplayer_spawn_above_opt_enemy_dist_point),
                (val_sub, ":minimum_enemy_distance", multiplayer_spawn_above_opt_enemy_dist_point),
@@ -5117,28 +5117,28 @@ scripts = [
                (val_add, ":entry_point_score", ":second_minimum_enemy_dist_score"),
              (try_end),
            (try_end),
-           
+
            #(assign, reg0, ":minimum_enemy_dist_score"), #close also above assignment lines with these displays
            #(assign, reg1, ":second_minimum_enemy_dist_score"), #close also above assignment lines with these displays
            #(display_message, "@{!}minimum enemy distance : {reg2}, score : {reg0}"), #close also above assignment lines with these displays
            #(display_message, "@{!}second minimum enemy distance : {reg3}, score : {reg1}"), #close also above assignment lines with these displays
          (try_end),
- 
+
          (try_begin), #giving positive points for "distance of entry point position to ground" while searching for entry point for defender team
            (neq, ":is_horseman", -1), #if being horseman or rider is not (not important)
 
            #additional score to entry points which has distance to ground value of > 0 meters
-           (position_get_distance_to_terrain, ":height_to_terrain", pos0),     
+           (position_get_distance_to_terrain, ":height_to_terrain", pos0),
            (val_max, ":height_to_terrain", 0),
            (val_min, ":height_to_terrain", 300),
-           (ge, ":height_to_terrain", 40),                      
-           
+           (ge, ":height_to_terrain", 40),
+
            (store_mul, ":height_to_terrain_score", ":height_to_terrain", ":num_human_agents_div_3_plus_one"), #it was 8
-           
+
            (try_begin),
              (val_mul, ":height_to_terrain_score", 4),
            (try_end),
-           
+
            (try_begin),
              (eq, ":is_horseman", 0),
            (else_try),
@@ -5155,13 +5155,13 @@ scripts = [
            (entry_point_get_position, pos1, multi_initial_spawn_point_team_2), #our base is at pos2
            (entry_point_get_position, pos2, multi_siege_flag_point), #enemy base is at pos1 (it was multi_initial_spawn_point_team_1 changed at v622)
          (try_end),
-           
+
            (get_sq_distance_between_positions_in_meters, ":sq_dist_to_our_base", pos0, pos1),
-           (get_sq_distance_between_positions_in_meters, ":sq_dist_to_enemy_base", pos0, pos2),                 
+           (get_sq_distance_between_positions_in_meters, ":sq_dist_to_enemy_base", pos0, pos2),
            (get_distance_between_positions_in_meters, ":dist_to_enemy_base", pos0, pos2),
 
            #give positive points if this entry point is near to our base.
-           (assign, ":dist_to_our_base_point", 0),     
+           (assign, ":dist_to_our_base_point", 0),
            (try_begin),
              (lt, ":sq_dist_to_our_base", 10000), #in siege give entry points score until 100m distance is reached
              (try_begin),
@@ -5181,7 +5181,7 @@ scripts = [
              (val_add, ":dist_to_our_base_point", 5000), #so score getting from being near to base changes between 0 to 15000
 
              (try_begin),
-               (eq, ":team_no", 0), 
+               (eq, ":team_no", 0),
              (else_try), #in siege mod for attackers being near to base entry point has 45 times less importance
                (val_div, ":dist_to_our_base_point", 45),
              (try_end),
@@ -5203,18 +5203,18 @@ scripts = [
 
          (gt, ":entry_point_score", ":best_entry_point_score"),
          (assign, ":best_entry_point_score", ":entry_point_score"),
-         (assign, ":best_entry_point", ":i_entry_point"),         
+         (assign, ":best_entry_point", ":i_entry_point"),
        (try_end),
 
-       #(assign, reg0, ":best_entry_point"), 
+       #(assign, reg0, ":best_entry_point"),
        #(assign, reg1, ":best_entry_point_score"),
-       #(assign, reg2, ":num_operations"),       
+       #(assign, reg2, ":num_operations"),
        #(assign, reg7, ":is_horseman"),
        #(display_message, "@{!},is horse:{reg7}, best entry:{reg0}, best entry score:{reg1}, num_operations:{reg2}"),
      (try_end),
-     (assign, reg0, ":best_entry_point"), 
+     (assign, reg0, ":best_entry_point"),
      ]),
-  
+
   #script_multiplayer_buy_agent_equipment
   # Input: arg1 = player_no
   # Output: none
@@ -5227,7 +5227,7 @@ scripts = [
      (player_set_slot, ":player_no", slot_player_last_rounds_used_item_earnings, 0),
      (val_add, ":player_gold", ":added_gold"),
      (assign, ":armor_bought", 0),
-     
+
      #moving original values to temp slots
      (try_for_range, ":i_item", slot_player_selected_item_indices_begin, slot_player_selected_item_indices_end),
        (player_get_slot, ":selected_item_index", ":player_no", ":i_item"),
@@ -5325,7 +5325,7 @@ scripts = [
              (eq, ":item_class", multi_item_class_type_horse),
              (val_div, ":item_value", 2),
            (try_end),
-   
+
            (try_begin),
              (gt, ":item_value", ":max_cost_value"),
              (assign, ":max_cost_value", ":item_value"),
@@ -5397,7 +5397,7 @@ scripts = [
            (try_end),
          (try_end),
 
-         (player_set_slot, ":player_no", slot_player_total_equipment_value, ":total_cost"),     
+         (player_set_slot, ":player_no", slot_player_total_equipment_value, ":total_cost"),
        (try_end),
      (try_end),
      (try_begin),
@@ -5437,7 +5437,7 @@ scripts = [
 #            (this_or_next|eq, ":item_no", "itm_cattle_meat"),
 #            (this_or_next|eq, ":item_no", "itm_pork"),
 #				(eq, ":item_no", "itm_chicken"),
-#				
+#
 #            (eq, ":item_modifier", imod_rotten),
 #            (assign, ":continue", 0),
 #          (try_end),
@@ -5492,7 +5492,7 @@ scripts = [
 
      (try_begin), #(if no one is around flag it again moves to its current owner situation but 5 times slower than normal)
        (eq, ":number_of_total_agents_around_flag", 0),
-       (store_mul, reg0, ":dist_between_flag_and_its_target", 2500),#5.00 * 1.00 * (500 stable) = 2000 
+       (store_mul, reg0, ":dist_between_flag_and_its_target", 2500),#5.00 * 1.00 * (500 stable) = 2000
      (else_try),
        (eq, ":number_of_total_agents_around_flag", 1),
        (store_mul, reg0, ":dist_between_flag_and_its_target", 500), #1.00 * (500 stable) = 500
@@ -5519,10 +5519,10 @@ scripts = [
        (store_mul, reg0, ":dist_between_flag_and_its_target", 59),  #0.117936(0.60 * 0.65 * 0.70 * 0.75 * 0.80 * 0.85 * 0.90) * (500 stable) = 58.968 >rounding> 59
      (else_try),
        (store_mul, reg0, ":dist_between_flag_and_its_target", 56),  #0.1120392(0.60 * 0.65 * 0.70 * 0.75 * 0.80 * 0.85 * 0.90 * 0.95) * (500 stable) = 56.0196 >rounding> 56
-     (try_end), 
+     (try_end),
 
      (assign, ":number_of_players", 0),
-     (get_max_players, ":num_players"),                               
+     (get_max_players, ":num_players"),
      (try_for_range, ":cur_player", 0, ":num_players"),
        (player_is_active, ":cur_player"),
        (val_add, ":number_of_players", 1),
@@ -5554,7 +5554,7 @@ scripts = [
 
      (try_begin),
        (multiplayer_is_server), #added after auto-animating
-     
+
        (try_begin),
          (eq, ":shown_flag_move_time", 0), #stop
          (prop_instance_stop_animating, ":shown_flag_id"),
@@ -5563,15 +5563,15 @@ scripts = [
        (try_end),
      (try_end),
    ]),
-           
+
 ("player_set_score",
    [
      (store_script_param, ":player_no", 1),
      (store_script_param, ":score", 2),
-     
+
      (player_set_score, ":player_no", ":score"),
    ]),
-           
+
   #script_player_set_kill_count
   # INPUT: arg1 = player_no, arg2 = score
   # OUTPUT: none
@@ -5579,12 +5579,12 @@ scripts = [
    [
      (store_script_param, ":player_no", 1),
      (store_script_param, ":score", 2),
-     
+
      (player_set_kill_count, ":player_no", ":score"),
    ]),
-           
-           
-           
+
+
+
   #script_player_set_death_count
   # INPUT: arg1 = player_no, arg2 = score
   # OUTPUT: none
@@ -5592,11 +5592,11 @@ scripts = [
    [
      (store_script_param, ":player_no", 1),
      (store_script_param, ":score", 2),
-     
+
      (player_set_death_count, ":player_no", ":score"),
    ]),
 # Note to modders: Uncomment these if you'd like to use the following.
-  
+
 ##  #script_game_check_party_sees_party
 ##  # This script is called from the game engine when a party is inside the range of another party
 ##  # INPUT: arg1 = party_no_seer, arg2 = party_no_seen
@@ -5620,15 +5620,15 @@ scripts = [
 
 
 
-  
-  
+
+
 	#the following is a very simple adjustment - it measures the difference in prices between two towns
 	#all goods are weighted equally except for luxuries
 	#it does not take into account the prices of the goods, nor cargo capacity
 	#to do that properly, a merchant would have to virtually fill his baggage, slot by slot, for each town
 	#i also found that one needed to introduce demand inelasticity -- prices should vary a lot for grain,  relatively little for iron
 
-  
+
   #script_shield_item_set_banner
   # INPUT: agent_no
   # OUTPUT: none
@@ -5641,7 +5641,7 @@ scripts = [
        (cur_item_set_tableau_material, ":tableau_no", reg0),
      ]),
 
-  
+
   #script_troop_agent_set_banner
   # INPUT: agent_no
   # OUTPUT: none
@@ -5729,8 +5729,8 @@ scripts = [
                (faction_get_slot, ":banner_mesh", ":rider_team_faction_no", slot_faction_banner),
              (else_try),
                (assign, ":banner_mesh", "mesh_banners_default_c"),
-             (try_end),                   
-           (try_end),             
+             (try_end),
+           (try_end),
          (try_end),
 #       (else_try),
 #         (agent_get_troop_id, ":troop_id", ":agent_no"),
@@ -5787,7 +5787,7 @@ scripts = [
 #         (try_begin),
 #           (neg|troop_slot_ge, ":banner_troop", slot_troop_banner_scene_prop, 1),
 #           (assign, ":banner_mesh", "mesh_banners_default_b"),
-#         (else_try), 
+#         (else_try),
 #           (troop_get_slot, ":banner_spr", ":banner_troop", slot_troop_banner_scene_prop),
 #           (store_add, ":banner_scene_props_end", banner_scene_props_end_minus_one, 1),
 #           (is_between, ":banner_spr", banner_scene_props_begin, ":banner_scene_props_end"),
@@ -5797,8 +5797,8 @@ scripts = [
 #       (try_end),
        (assign, reg0, ":banner_mesh"),
      ]),
-           
-           
+
+
   # script_draw_banner_to_region
   # Input: arg1 = troop_no, arg2 = center_pos_x, arg3 = center_pos_y, arg4 = width, arg5 = height, arg6 = stretch_width, arg7 = stretch_height, arg8 = default_scale, arg9 = max_charge_scale, arg10 = drawn_item_type
   # drawn_item_type is 0 for banners, 1 for shields, 2 for heater shield, 3 for armor
@@ -5865,7 +5865,7 @@ scripts = [
       (position_move_x, pos2, ":width"),
       (position_move_y, pos2, ":height"),
       (cur_tableau_add_mesh_with_scale_and_vertex_color, "mesh_custom_banner_bg", pos1, pos2, 0, ":bg_color_2"),
-      
+
       (assign, ":charge_stretch", ":stretch_width"),
       (val_min, ":charge_stretch", ":stretch_height"),
       (val_min, ":charge_stretch", ":max_charge_scale"),
@@ -5892,7 +5892,7 @@ scripts = [
           (val_add, ":center_pos_y", 30),
         (try_end),
       (try_end),
-      
+
       (try_begin),
         (ge, ":num_charges", 1),
         (val_mul, reg1, ":charge_stretch"),
@@ -6040,7 +6040,7 @@ scripts = [
         (cur_tableau_add_mesh_with_scale_and_vertex_color, reg9, pos3, pos4, 0, reg11),
       (try_end),
      ]),
-           
+
   #script_add_troop_to_cur_tableau_for_profile
   # INPUT: troop_no
   # OUTPUT: none
@@ -6051,7 +6051,7 @@ scripts = [
        (set_fixed_point_multiplier, 100),
 
        (cur_tableau_clear_override_items),
-       
+
        (cur_tableau_set_camera_parameters, 1, 4, 6, 10, 10000),
 
        (init_position, pos5),
@@ -6061,7 +6061,7 @@ scripts = [
        (assign, ":camera_yaw", -15),
        (assign, ":camera_pitch", -18),
        (assign, ":animation", anim_stand_man),
-       
+
        (position_set_z, pos5, ":cam_height"),
 
        # camera looks towards -z axis
@@ -6101,11 +6101,11 @@ scripts = [
 
        (copy_position, pos8, pos5),
        (position_rotate_x, pos8, -90), #y axis aligned with camera now. z is up
-       (position_rotate_z, pos8, 30), 
-       (position_rotate_x, pos8, -60), 
+       (position_rotate_z, pos8, 30),
+       (position_rotate_x, pos8, -60),
        (cur_tableau_add_sun_light, pos8, 175,150,125),
      ]),
-           
+
   # script_get_troop_custom_banner_num_positionings
   # Input: arg1 = troop_no
   # Output: reg0 = num_positionings
@@ -6284,7 +6284,7 @@ scripts = [
         (try_end),
       (try_end),
      ]),
-           
+
   #script_check_creating_ladder_dust_effect
   # INPUT: arg1 = instance_id, arg2 = remaining_time
   # OUTPUT: none
@@ -6296,14 +6296,14 @@ scripts = [
       (try_begin),
         (lt, ":remaining_time", 15), #less then 0.15 seconds
         (gt, ":remaining_time", 3), #more than 0.03 seconds
-      
+
         (scene_prop_get_slot, ":smoke_effect_done", ":instance_id", scene_prop_smoke_effect_done),
         (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),
 
         (try_begin),
           (eq, ":smoke_effect_done", 0),
           (eq, ":opened_or_closed", 0),
-      
+
           (prop_instance_get_position, pos0, ":instance_id"),
 
           (assign, ":smallest_dist", -1),
@@ -6321,13 +6321,13 @@ scripts = [
 
             (ge, ":smallest_dist", 0),
             (lt, ":smallest_dist", 22500), #max 15m distance
-      
+
             (entry_point_get_position, pos1, ":nearest_entry_point"),
             (position_rotate_x, pos1, -90),
 
             (prop_instance_get_scene_prop_kind, ":scene_prop_kind", ":instance_id"),
             (try_begin),
-              (eq, ":scene_prop_kind", "spr_siege_ladder_move_6m"),              
+              (eq, ":scene_prop_kind", "spr_siege_ladder_move_6m"),
               (init_position, pos2),
               (position_set_z, pos2, 300),
               (position_transform_position_to_parent, pos3, pos1, pos2),
@@ -6368,10 +6368,10 @@ scripts = [
         (try_end),
       (try_end),
       ]),
-    
+
     ##delay_script_test
-    #script_spawn_missile_at_point
-    ("spawn_missile_at_point",[
+    #script_cf_spawn_missile_at_point
+    ("cf_spawn_missile_at_point",[
       (store_script_param,":attacker_agent",1),
       (store_script_param,":agent_cur_weapon",2),
       (store_script_param,":cur_ammo_id",3),
@@ -6393,13 +6393,13 @@ scripts.extend(generate_call_script_scripts(max_params_num_plus_1))
 ex_scripts = [
   ##script_initialize_param_num_of_script
   ("initialize_param_num_of_script",set_num_of_params_in_each_script()),
-  
+
   ##The scripts following can't be called by other custom scripts!
   ##script_add_script_after_seconds
   ("add_script_after_seconds",[
     (store_script_param,":delay_seconds",1),
     (store_script_param,":script_id",2),
-    
+
     (val_max,":delay_seconds",1),#delay 1 seconds at least,or call the script directly,plz.
     (store_add,":time_slot_no","$cur_time_slot",":delay_seconds"),
     (try_begin),
@@ -6425,9 +6425,9 @@ ex_scripts = [
     (try_end),
     (item_set_slot,"itm_delay_script_end_pointer_queue",":time_slot_no",":end_pointer"),
   ]),
-  
-  ##script_call_scripts_in_delay_script_queue
-  ("call_scripts_in_delay_script_queue",[
+
+  ##script_cf_call_scripts_in_delay_script_queue
+  ("cf_call_scripts_in_delay_script_queue",[
     (store_script_param_1,":time_slot_no"),
     (store_add,":recorder_item_no",delay_script_slot_begin,":time_slot_no"),
     (item_get_slot,":end_pointer","itm_delay_script_end_pointer_queue",":time_slot_no"),
@@ -6473,7 +6473,7 @@ ex_scripts = [
     (try_end),
     (item_set_slot,"itm_delay_script_end_pointer_queue",":time_slot_no",0),
   ]),
-  
+
   ##script_clear_delay_script_data
   ("clear_delay_script_data",[
     (assign,"$cur_time_slot",0),
