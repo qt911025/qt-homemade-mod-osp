@@ -338,21 +338,26 @@ common_automatic = (0.05,0,0,[],[
 		(agent_is_alive,":attacker_agent"),
 		(agent_get_wielded_item,":agent_cur_weapon",":attacker_agent"),
 		(gt,":agent_cur_weapon",0),
+        (item_get_type, ":item_type", ":agent_cur_weapon"),
+        (eq,":item_type",itp_type_musket),
 		(agent_get_attack_action, ":action_state", ":attacker_agent"),
 		(try_begin),
-			(eq,":action_state",1),
-            (item_get_type, ":item_type", ":agent_cur_weapon"),
-            (eq,":item_type",itp_type_musket),
-
+            (agent_is_non_player, ":attacker_agent"),
+            (try_begin),
+                (gt,":action_state",0),#free
+                (neq,":action_state",5),#reloading
+                (neq,":action_state",7),#cancelling
+                (agent_set_attack_action, ":attacker_agent", 0),
+            (try_end),
+        (else_try),#player simulate attack
+			(eq,":action_state",1),#readying
 			#ticker trigger
-			(agent_get_slot,":ticker_time",":attacker_agent",slot_agent_shoot_time_ticker),
 			(try_begin),
-				(le,":ticker_time",0),
+				(le,"$g_automatic_ticker_time",0),
 				#ticker trigger
-				(item_get_speed_rating,":ticker_time",":agent_cur_weapon"),
-                (val_max,":ticker_time",1),
-				(store_div,":ticker_time",200,":ticker_time"),
-				(agent_set_slot,":attacker_agent",slot_agent_shoot_time_ticker,":ticker_time"),
+				(item_get_speed_rating,"$g_automatic_ticker_time",":agent_cur_weapon"),
+                (val_max,"$g_automatic_ticker_time",1),
+				(store_div,"$g_automatic_ticker_time",200,"$g_automatic_ticker_time"),
                 (agent_get_item_cur_ammo, ":cur_ammo", ":attacker_agent"),
 				(gt,":cur_ammo",0),
 
@@ -361,7 +366,7 @@ common_automatic = (0.05,0,0,[],[
                 (assign,":item_slot_num",4),
                 (try_for_range,":cur_item_slot",0,":item_slot_num"),
                     (agent_get_item_slot, ":item_no", ":attacker_agent", ":cur_item_slot"),
-                    (ge,":cur_ammo_id",0),
+                    (ge,":item_no",0),
                     (item_get_type, ":item_type", ":item_no"),
                     (eq,":item_type",itp_type_bullets),
                     (assign,":cur_ammo_id",":item_no"),
@@ -414,17 +419,12 @@ common_automatic = (0.05,0,0,[],[
 				(val_sub,":cur_ammo",1),
 				(agent_set_ammo,":attacker_agent",":agent_cur_weapon",":cur_ammo"),
 			(else_try),
-				(val_sub,":ticker_time",1),
-				(agent_set_slot,":attacker_agent",slot_agent_shoot_time_ticker,":ticker_time"),
+				(val_sub,"$g_automatic_ticker_time",1),
 			(try_end),
 		(else_try),
-			(agent_get_defend_action, ":defend_action_state", ":attacker_agent"),
-			(this_or_next|gt,":defend_action_state",0),
-			(gt,":action_state",1),
-            (item_get_speed_rating,":ticker_time",":agent_cur_weapon"),
-            (val_max,":ticker_time",1),
-			(store_div,":ticker_time",800,":ticker_time"),
-			(agent_set_slot,":attacker_agent",slot_agent_shoot_time_ticker,":ticker_time"),
+            (item_get_speed_rating,"$g_automatic_ticker_time",":agent_cur_weapon"),
+            (val_max,"$g_automatic_ticker_time",1),
+			(store_div,"$g_automatic_ticker_time",1400,"$g_automatic_ticker_time"),
 		(try_end),
 	(try_end),
 ])

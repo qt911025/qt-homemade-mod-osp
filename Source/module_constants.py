@@ -89,8 +89,6 @@ slot_agent_walker_occupation      = 25
 slot_agent_bought_horse           = 26
 ###
 
-
-slot_agent_shoot_time_ticker      = 27#ticker_of_player is different from ticker_of_ai
 slot_agent_attack_switch      = 28
 
 ########################################################
